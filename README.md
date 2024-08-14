@@ -61,14 +61,16 @@ _reponses_ : Cette collection stocke les réponses possibles pour les questions.
 L'application est structurée en trois modules principaux :
 
 _fichierModule_
-Fonctions : createFichier, readFichier, updateFichier, destroyFichier.
+Fonctions
+createFichier, readFichier, updateFichier, destroyFichier.
 
 _questionModule_ :
-Fonctions : createQuestion, readQuestion, updateQuestion, destroyQuestion.
+Fonctions
+createQuestion, readQuestion, updateQuestion, destroyQuestion.
 
 _reponseModule_
-Fonctions : createReponse, readReponse, updateReponse, destroyReponse.
-reponseModule
+Fonctions
+createReponse, readReponse, updateReponse, destroyReponse.
 
 ## Authors
 
