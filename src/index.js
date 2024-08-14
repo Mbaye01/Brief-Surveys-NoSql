@@ -9,12 +9,12 @@ const {
   readQuestions,
   updateQuestion,
   destroyQuestion,
-} = require("./questionsModule");
+} = require("./questionModule");
 const {
-  createAnswer,
-  readAnswers,
-  updateAnswer,
-  destroyAnswer,
+  createReponse,
+  readReponses,
+  updateReponse,
+  destroyReponse,
 } = require("./reponseModule");
 
 // Exemple d'utilisation
@@ -83,24 +83,24 @@ const {
 
   try {
     // Créer une réponse
-    const newAnswerId = await createAnswer({
+    const newReponseId = await createReponse({
       questionId: newQuestionId,
       text: "Oui, je suis satisfait.",
     });
-    console.log("Réponse créée avec succès, ID:", newAnswerId);
+    console.log("Réponse créée avec succès, ID:", newReponseId);
 
     // Lire les réponses
-    const answers = await readAnswers({});
-    console.log("Liste des réponses:", answers);
+    const reponses = await readReponses({});
+    console.log("Liste des réponses:", reponses);
 
     // Mettre à jour une réponse
-    const updateCount = await updateAnswer(newAnswerId, {
+    const updateCount = await updateReponse(newReponseId, {
       text: "Non, je ne suis pas satisfait.",
     });
     console.log(`Nombre de réponses mises à jour: ${updateCount}`);
 
     // Supprimer une réponse
-    const deleteCount = await destroyAnswer(newAnswerId);
+    const deleteCount = await destroyReponse(newReponseId);
     console.log(`Nombre de réponses supprimées: ${deleteCount}`);
   } catch (error) {
     console.error("Erreur lors de l'opération:", error);
