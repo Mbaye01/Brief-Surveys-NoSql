@@ -20,7 +20,7 @@ async function updateReponse(reponse, id, updates) {
   return result.matchedCount;
 }
 
-async function deleteReponse(reponse, id) {
+async function destroyReponse(reponse, id) {
   const db = await testConnection();
   const result = await db
     .collection(reponse)
@@ -31,6 +31,6 @@ async function deleteReponse(reponse, id) {
 module.exports = {
   createReponse,
   readReponse,
-  deleteReponse,
+  destroyReponse,
   updateReponse,
 };

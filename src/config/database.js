@@ -1,13 +1,10 @@
 const { MongoClient } = require("mongodb");
 
 const url = "mongodb://127.0.0.1:27017";
-const dbName = "Enquetes";
+const dbName = "abc_corporation";
 
 async function connect() {
-  const client = new MongoClient(url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  const client = new MongoClient(url); // Supprimez les options dépréciées
   await client.connect();
   console.log("Connected to MongoDB");
   const db = client.db(dbName);

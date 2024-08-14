@@ -21,7 +21,7 @@ async function updateQuestion(Question, id, updates) {
   return result.matchedCount;
 }
 
-async function deleteQuestion(Question, id) {
+async function destroyQuestion(Question, id) {
   const db = await testConnection();
   const result = await db
     .collection(Question)
@@ -33,5 +33,5 @@ module.exports = {
   createQuestion,
   readQuestions,
   updateQuestion,
-  deleteQuestion,
+  destroyQuestion,
 };
