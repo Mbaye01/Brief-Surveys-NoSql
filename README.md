@@ -53,10 +53,13 @@ Nom de la base de donnée : abc_corporation
 La base de données abc_corporation contient les collections suivantes :
 
 _fichiers_ :
+
 Cette collection stocke les questions des enquêtes.
 _questions_ :
+
 Cette collection contient les résultats des enquêtes.
 _reponses_ :
+
 Cette collection stocke les réponses possibles pour les questions.
 
 ## Modules
@@ -75,7 +78,7 @@ _questionModule_ :
 
 _reponseModule_ :
 
-- Fonctions
+- Fonctions :
   createReponse, readReponse, updateReponse, destroyReponse.
 
 ## Authors
