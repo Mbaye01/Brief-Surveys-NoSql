@@ -197,9 +197,8 @@ _Vérifiez que MongoDB est installé, en cours d'exécution, et que les paramèt
 `config/database.js` sont corrects.
 
 **Dépendances**
-_Supprimez node_modules et réinstallez avec_
 
-`npm install` si vous rencontrez des erreurs.
+_Supprimez node_modules et réinstallez avec_ `npm install` si vous rencontrez des erreurs.
 
 **Mise à jour Node.js**
 
