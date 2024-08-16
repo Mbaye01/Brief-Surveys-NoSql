@@ -24,14 +24,14 @@ git clone <https://github.com/Mbaye01/Brief-Surveys-NoSql.git>
 **Accédez au dossier du projet :**
 
 ```bash
-cd survey_app
+cd Brief-Surveys-NoSql
 
 ```
 
 **Installez les dépendances :**
 
 ```bash
-ipm install
+npm install
 ```
 
 **Configurez la base de données :**
@@ -87,7 +87,7 @@ db.createCollection("ma_collection")
 
 **Etape 5** : Insérer un document dans la collection
 
-Pour insérer un document dans la collection nouvellement créée, utilisez les commandes insertOne ou insertMany.
+Pour insérer un document dans la collection nouvellement créée, utilisez la commande insertOne ou insertMany :
 
 ```
 db.ma_collection.insertOne({ })
@@ -155,9 +155,9 @@ L'application est structurée en trois modules principaux :
 
   **2- questionModule**
 
-  - createQuestion(collectionName, data)
+- createQuestion(collectionName, data)
 
-    Paramètres : Similaires à createFichier.
+  Paramètres : Similaires à createFichier.
 
 - readQuestion(collectionName, query = {})
 
@@ -189,6 +189,24 @@ L'application est structurée en trois modules principaux :
 
   Paramètres : Similaires à deleteFichier.
 
+  ## Dépannage
+
+  **MongoDB**
+
+_Vérifiez que MongoDB est installé, en cours d'exécution, et que les paramètres dans_
+`config/database.js` sont corrects.
+
+**Dépendances**
+_Supprimez node_modules et réinstallez avec_
+
+`npm install` si vous rencontrez des erreurs.
+
+**Mise à jour Node.js**
+
+_Si vous avez des incompatibilités, mettez à jour Node.js vers la dernière version stable._
+
+_Si l'application ne démarre pas correctement, assurez-vous que toutes les dépendances sont installées et que MongoDB est en cours d'exécution._
+
 ## Authors
 
-Mbaye Abdellahi
+_Mbaye Abdellahi Kalidou_
