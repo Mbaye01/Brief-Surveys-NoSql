@@ -15,29 +15,29 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
 Suivez ces étapes pour configurer le projet sur votre machine locale :
 
-1. **Clonez le repository :**
+**Clonez le repository :**
 
-   ```bash
-   git clone <https://github.com/Mbaye01/Brief-Surveys-NoSql.git>
-   ```
+```bash
+git clone <https://github.com/Mbaye01/Brief-Surveys-NoSql.git>
+```
 
-2. **Accédez au dossier du projet :**
+**Accédez au dossier du projet :**
 
-   ```bash
-   cd Brief-Surveys-NoSql
+```bash
+cd Brief-Surveys-NoSql
 
-   ```
+```
 
-3. **Installez les dépendances :**
+**Installez les dépendances :**
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
-4. **Configurez la base de données :**
+**Configurez la base de données :**
 
-   - Assurez-vous que MongoDB est en cours d'exécution sur votre machine locale.
-   - Mettez les paramètres de connexion dans `config/database.js`.
+- Assurez-vous que MongoDB est en cours d'exécution sur votre machine locale.
+- Mettez les paramètres de connexion dans `config/database.js`.
 
 ## Utilisation
 
@@ -47,31 +47,72 @@ Pour démarrer l'application, exécutez la commande suivante :
 npm start
 ```
 
-## Creer la Base de données
+## Créer une base de données MongoDB
 
-pour creer la base de donnée
+**Etape 1** : Ouvrir la ligne de commande (cmd)
 
-Nom de la base de donnée : abc_corporation
-La base de données abc_corporation contient les collections suivantes :
+- Ouvrez cmd sur votre ordinateur.
 
-_fichiers_ :
-Cette collection stocke les questions des enquêtes.
+**Etape 2** : Lancer MongoDB
 
-_questions_ :
-Cette collection contient les résultats des enquêtes.
+- Assurez-vous que MongoDB est installé et que le serveur MongoDB est en cours d'exécution.
 
-_reponses_ :
-Cette collection stocke les réponses possibles pour les questions.
+- Connectez-vous à votre instance MongoDB en tapant la commande suivante :
 
-## Modules
+```
+mongo
+```
+
+**Etape 3** : Créer une base de données
+
+Pour créer une nouvelle base de données, utilisez la commande use suivie du nom de la base de données.
+
+Par exemple,
+pour créer une base de données appelée _ma_base_de_donnees_ :
+
+```
+use ma_base_de_donnees
+
+```
+
+**Etape 4** : Créer une collection
+Pour créer une collection, utilisez la commande suivante.
+
+Par exemple, pour créer une collection appelée _ma_collection_ :
+
+```
+db.createCollection("ma_collection")
+
+```
+
+**Etape 5** : Insérer un document dans la collection
+
+Pour insérer un document dans la collection nouvellement créée, utilisez les commandes insertOne ou insertMany.
+
+```
+db.ma_collection.insertOne({ })
+```
+
+```
+db.ma_collection.insertMany([{ },{ },{ }])
+
+```
+
+**Etape 6** : Vérifier l'insertion des documents
+
+Pour vérifier que les documents ont été insérés correctement, utilisez la commande suivante pour afficher tous les documents dans la collection :
+
+```
+db.ma_collection.find().pretty()
+```
+
+## Structure de l'Application
 
 L'application est structurée en trois modules principaux :
 
 **fichierModule** ,
 **questionModule**,
 **reponseModule**.
-
----
 
 **1- fichierModule**
 
