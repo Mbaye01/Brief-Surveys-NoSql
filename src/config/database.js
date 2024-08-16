@@ -4,7 +4,7 @@ const url = "mongodb://127.0.0.1:27017";
 const dbName = "abc_corporation";
 
 async function connect() {
-  const client = new MongoClient(url); // Supprimez les options dépréciées
+  const client = new MongoClient(url);
   await client.connect();
   console.log("Connected to MongoDB");
   const db = client.db(dbName);
@@ -21,6 +21,8 @@ async function testConnection() {
   }
 }
 
-testConnection();
+if (require.main === module) {
+  testConnection();
+}
 
 module.exports = { connect };

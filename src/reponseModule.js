@@ -1,29 +1,30 @@
-const { testConnection } = require("./config/database");
+const { connect } = require("./config/database");
+const { ObjectId } = require("mongodb");
 
-async function createReponse(reponse, data) {
-  const db = await testConnection();
-  const result = await db.collection(reponse).insertOne(data);
+async function createReponse(data) {
+  const { db } = await connect();
+  const result = await db.collection("reponses").insertOne(data);
   return result.insertedId;
 }
 
-async function readReponse(reponse, query = {}) {
-  const db = await testConnection();
-  const documents = await db.collection(reponse).find(query).toArray();
+async function readReponse(query = {}) {
+  const { db } = await connect();
+  const documents = await db.collection("reponses").find(query).toArray();
   return documents;
 }
 
-async function updateReponse(reponse, id, updates) {
-  const db = await testConnection();
+async function updateReponse(id, updates) {
+  const { db } = await connect();
   const result = await db
-    .collection(reponse)
+    .collection("reponses")
     .updateOne({ _id: new ObjectId(id) }, { $set: updates });
   return result.matchedCount;
 }
 
-async function destroyReponse(reponse, id) {
-  const db = await testConnection();
+async function destroyReponse(id) {
+  const { db } = await connect();
   const result = await db
-    .collection(reponse)
+    .collection("reponses")
     .deleteOne({ _id: new ObjectId(id) });
   return result.deletedCount;
 }
@@ -31,6 +32,6 @@ async function destroyReponse(reponse, id) {
 module.exports = {
   createReponse,
   readReponse,
-  destroyReponse,
   updateReponse,
+  destroyReponse,
 };

@@ -1,30 +1,30 @@
-const { MongoClient, ObjectId } = require("mongodb");
-const db = require("./cofig/database");
+const { connect } = require("./config/database");
+const { ObjectId } = require("mongodb");
 
-async function createQuestion(Question, data) {
-  const db = await testConnection();
-  const result = await db.collection(Question).insertOne(data);
+async function createQuestion(data) {
+  const { db } = await connect();
+  const result = await db.collection("questions").insertOne(data);
   return result.insertedId;
 }
 
-async function readQuestions(Question, query = {}) {
-  const db = await testConnection();
-  const documents = await db.collection(Question).find(query).toArray();
+async function readQuestions(query = {}) {
+  const { db } = await connect();
+  const documents = await db.collection("questions").find(query).toArray();
   return documents;
 }
 
-async function updateQuestion(Question, id, updates) {
-  const db = await testConnection();
+async function updateQuestion(id, updates) {
+  const { db } = await connect();
   const result = await db
-    .collection(Question)
+    .collection("questions")
     .updateOne({ _id: new ObjectId(id) }, { $set: updates });
   return result.matchedCount;
 }
 
-async function destroyQuestion(Question, id) {
-  const db = await testConnection();
+async function destroyQuestion(id) {
+  const { db } = await connect();
   const result = await db
-    .collection(Question)
+    .collection("questions")
     .deleteOne({ _id: new ObjectId(id) });
   return result.deletedCount;
 }

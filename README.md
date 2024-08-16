@@ -47,7 +47,9 @@ Pour démarrer l'application, exécutez la commande suivante :
 npm start
 ```
 
-## Base de données
+## Creer la Base de données
+
+pour creer la base de donnée
 
 Nom de la base de donnée : abc_corporation
 La base de données abc_corporation contient les collections suivantes :
@@ -65,20 +67,86 @@ Cette collection stocke les réponses possibles pour les questions.
 
 L'application est structurée en trois modules principaux :
 
-_fichierModule_ :
+**fichierModule** ,
+**questionModule**,
+**reponseModule**.
 
-- Fonctions :
-  createFichier, readFichier, updateFichier, destroyFichier.
+---
 
-_questionModule_ :
+**1- fichierModule**
 
-- Fonctions :
-  createQuestion, readQuestion, updateQuestion, destroyQuestion.
+- createFichier(collectionName, data) .
 
-_reponseModule_ :
+  Paramètres :
+  collectionName (String) : Le nom de la collection.
 
-- Fonctions :
-  createReponse, readReponse, updateReponse, destroyReponse.
+  data (Object) : Les données du fichier à insérer.
+
+  Retour : L'ID du fichier inséré.
+
+- readFichier(collectionName, query = {})
+
+  Paramètres :
+  collectionName (String) : Le nom de la collection.
+
+  query (Object) : Le filtre de recherche (optionnel).
+
+  Retour : Un tableau des fichiers correspondant.
+
+- updateFichier(collectionName, id, updates)
+
+  Paramètres :
+  collectionName (String) : Le nom de la collection.
+
+  id (String) : L'ID du fichier à mettre à jour.
+
+  updates (Object) : Les données à mettre à jour.
+
+  Retour : Le nombre de fichiers mis à jour.
+
+- destroyFichier(collectionName, id)
+
+  Paramètres : collectionName (String) : Le nom de la collection.
+
+  id (String) : L'ID du fichier à supprimer.
+
+  Retour : Le nombre de fichiers supprimés.
+
+  **2- questionModule**
+
+  - createQuestion(collectionName, data)
+
+    Paramètres : Similaires à createFichier.
+
+- readQuestion(collectionName, query = {})
+
+  Paramètres : Similaires à readFichier.
+
+- updateQuestion(collectionName, id, updates)
+
+  Paramètres : Similaires à updateFichier.
+
+- destroyQuestion(collectionName, id)
+
+  Paramètres : Similaires à deleteFichier.
+
+**3- reponseModule**
+
+- createReponse(collectionName, data)
+
+  Paramètres : Similaires à createFichier.
+
+- readReponse(collectionName, query = {})
+
+  Paramètres : Similaires à readFichier.
+
+- updateReponse(collectionName, id, updates)
+
+  Paramètres : Similaires à updateFichier.
+
+- destroyReponse(collectionName, id)
+
+  Paramètres : Similaires à deleteFichier.
 
 ## Authors
 

@@ -1,37 +1,37 @@
-const { testConnection } = require("./config/database");
-const { ObjectId } = require("mongodb"); // Assurez-vous d'avoir importé ObjectId
+const { connect } = require("./config/database");
+const { ObjectId } = require("mongodb");
 
-async function createFichiers(collectionName, data) {
-  const db = await testConnection();
-  const result = await db.collection(collectionName).insertOne(data);
+async function createFichier(data) {
+  const { db } = await connect();
+  const result = await db.collection("fichiers").insertOne(data);
   return result.insertedId;
 }
 
-async function readFichier(collectionName, query = {}) {
-  const db = await testConnection();
-  const documents = await db.collection(collectionName).find(query).toArray();
+async function readFichier(query = {}) {
+  const { db } = await connect();
+  const documents = await db.collection("fichiers").find(query).toArray();
   return documents;
 }
 
-async function updateFichier(fichier, id, updates) {
-  const db = await testConnection();
+async function updateFichier(id, updates) {
+  const { db } = await connect();
   const result = await db
-    .collection(collectionName)
+    .collection("fichiers")
     .updateOne({ _id: new ObjectId(id) }, { $set: updates });
   return result.matchedCount;
 }
 
-async function deleteFicher(collectionName, id) {
-  const db = await testConnection();
+async function destroyFichier(id) {
+  const { db } = await connect();
   const result = await db
-    .collection(collectionName)
+    .collection("fichiers")
     .deleteOne({ _id: new ObjectId(id) });
   return result.deletedCount;
 }
 
 module.exports = {
-  createFichiers,
+  createFichier,
   readFichier,
   updateFichier,
-  deleteFicher,
+  destroyFichier,
 };
