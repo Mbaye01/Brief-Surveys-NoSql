@@ -24,14 +24,14 @@ git clone <https://github.com/Mbaye01/Brief-Surveys-NoSql.git>
 **Accédez au dossier du projet :**
 
 ```bash
-cd Brief-Surveys-NoSql
+cd survey_app
 
 ```
 
 **Installez les dépendances :**
 
 ```bash
-npm install
+ipm install
 ```
 
 **Configurez la base de données :**
