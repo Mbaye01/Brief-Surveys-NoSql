@@ -47,66 +47,7 @@ Pour démarrer l'application, exécutez la commande suivante :
 npm start
 ```
 
-## Créer une base de données MongoDB
-
-**Etape 1** : Ouvrir la ligne de commande (cmd)
-
-- Ouvrez cmd sur votre ordinateur.
-
-**Etape 2** : Lancer MongoDB
-
-- Assurez-vous que MongoDB est installé et que le serveur MongoDB est en cours d'exécution.
-
-- Connectez-vous à votre instance MongoDB en tapant la commande suivante :
-
-```
-mongo
-```
-
-**Etape 3** : Créer une base de données
-
-Pour créer une nouvelle base de données, utilisez la commande use suivie du nom de la base de données.
-
-Par exemple,
-pour créer une base de données appelée _ma_base_de_donnees_ :
-
-```
-use ma_base_de_donnees
-
-```
-
-**Etape 4** : Créer une collection
-Pour créer une collection, utilisez la commande suivante.
-
-Par exemple, pour créer une collection appelée _ma_collection_ :
-
-```
-db.createCollection("ma_collection")
-
-```
-
-**Etape 5** : Insérer un document dans la collection
-
-Pour insérer un document dans la collection nouvellement créée, utilisez la commande insertOne ou insertMany :
-
-```
-db.ma_collection.insertOne({ })
-```
-
-```
-db.ma_collection.insertMany([{ },{ },{ }])
-
-```
-
-**Etape 6** : Vérifier l'insertion des documents
-
-Pour vérifier que les documents ont été insérés correctement, utilisez la commande suivante pour afficher tous les documents dans la collection :
-
-```
-db.ma_collection.find().pretty()
-```
-
-## Structure de l'Application
+##
 
 L'application est structurée en trois modules principaux :
 
