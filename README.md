@@ -1,8 +1,8 @@
-# Survey App
+# ABC-SURVEY-APP
 
 ## Description
 
-Survey App est une application JavaScript simple permettant de gérer les fiches d'enquête de satisfaction des clients. L'application utilise une base de données MongoDB pour stocker les données et permet d'effectuer des opérations CRUD (Create, Read, Update, Delete) sur ces fiches.
+Survey App est une application JavaScript simple permettant de gérer les fiches d'enquête de satisfaction des clients. L'application utilise une base de données MongoDB pour stocker les données et permet d'effectuer des opérations CRUD (Create, Read, Update, Delete) sur ces fiches d'enquête, questions et réponses.
 
 ## Prérequis
 
@@ -15,29 +15,28 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
 Suivez ces étapes pour configurer le projet sur votre machine locale :
 
-**Clonez le repository :**
+1. **Clonez le repository :**
 
-```bash
-git clone <https://github.com/Mbaye01/Brief-Surveys-NoSql.git>
-```
+   ```bash
+   git clone (https://github.com/Mbaye01/Brief-Surveys-NoSql.git)
+   ```
 
-**Accédez au dossier du projet :**
+2. **Accédez au dossier du projet :**
 
-```bash
-cd Brief-Surveys-NoSql
+   ```bash
+   cd abc_corporation_app
+   ```
 
-```
+3. **Installez les dépendances :**
 
-**Installez les dépendances :**
+   ```bash
+   npm install
+   ```
 
-```bash
-npm install
-```
+4. **Configurez la base de données :**
 
-**Configurez la base de données :**
-
-- Assurez-vous que MongoDB est en cours d'exécution sur votre machine locale.
-- Mettez les paramètres de connexion dans `config/database.js`.
+   - Assurez-vous que MongoDB est en cours d'exécution sur votre machine locale.
+   - Mettez les paramètres de connexion dans `config/db.js`.
 
 ## Utilisation
 
@@ -47,106 +46,187 @@ Pour démarrer l'application, exécutez la commande suivante :
 npm start
 ```
 
-##
+Ou en accedant au dossier src
 
-L'application est structurée en trois modules principaux :
+```bash
+cd src
+```
 
-**fichierModule** ,
-**questionModule**,
-**reponseModule**.
+```bash
+node index.js
+```
 
-**1- fichierModule**
+## Documentation des Fonctions
 
-- createFichier(collectionName, data) .
+### Module `surveyModule`
 
-  Paramètres :
-  collectionName (String) : Le nom de la collection.
+#### `insertSurvey(survey)`
 
-  data (Object) : Les données du fichier à insérer.
+**Description** : Ajoute une nouvelle enquête dans la base de données.
 
-  Retour : L'ID du fichier inséré.
+**Paramètres** :
 
-- readFichier(collectionName, query = {})
+- `survey` (Object) : Un objet représentant l'enquête avec les propriétés suivantes :
+  - `idSurvey` (Number) : Identifiant unique de l'enquête.
+  - `name` (String) : Nom de l'enquête.
+  - `description` (String) : Description de l'enquête.
+  - `createdAt` (String) : Date de création de l'enquête.
+  - `createdBy` (Object) : Informations sur la personne ayant créé l'enquête, avec les propriétés :
+    - `employeeName` (String) : Nom de l'employé.
+    - `employeeRole` (String) : Rôle de l'employé.
 
-  Paramètres :
-  collectionName (String) : Le nom de la collection.
+**Valeur de Retour** : Un message indiquant si l'ajout a réussi ou a échoué.
 
-  query (Object) : Le filtre de recherche (optionnel).
+#### `getAllSurveys()`
 
-  Retour : Un tableau des fichiers correspondant.
+**Description** : Récupère toutes les enquêtes présentes dans la base de données.
 
-- updateFichier(collectionName, id, updates)
+**Paramètres** : Aucun.
 
-  Paramètres :
-  collectionName (String) : Le nom de la collection.
+**Valeur de Retour** : Un tableau d'objets représentant chaque enquête.
 
-  id (String) : L'ID du fichier à mettre à jour.
+#### `getSurveyById(idSurvey)`
 
-  updates (Object) : Les données à mettre à jour.
+**Description** : Récupère une enquête spécifique par son identifiant.
 
-  Retour : Le nombre de fichiers mis à jour.
+**Paramètres** :
 
-- destroyFichier(collectionName, id)
+- `idSurvey` (Number) : Identifiant unique de l'enquête.
 
-  Paramètres : collectionName (String) : Le nom de la collection.
+**Valeur de Retour** : L'objet représentant l'enquête correspondante, ou `null` si aucune enquête n'est trouvée.
 
-  id (String) : L'ID du fichier à supprimer.
+#### `updateSurvey(idSurvey, updateData)`
 
-  Retour : Le nombre de fichiers supprimés.
+**Description** : Met à jour les informations d'une enquête existante.
 
-  **2- questionModule**
+**Paramètres** :
 
-- createQuestion(collectionName, data)
+- `idSurvey` (Number) : Identifiant unique de l'enquête à mettre à jour.
+- `updateData` (Object) : Un objet contenant les nouvelles valeurs pour les propriétés à mettre à jour.
 
-  Paramètres : Similaires à createFichier.
+**Valeur de Retour** : Un message indiquant si la mise à jour a réussi ou a échoué.
 
-- readQuestion(collectionName, query = {})
+#### `deleteSurvey(idSurvey)`
 
-  Paramètres : Similaires à readFichier.
+**Description** : Supprime une enquête de la base de données par son identifiant.
 
-- updateQuestion(collectionName, id, updates)
+**Paramètres** :
 
-  Paramètres : Similaires à updateFichier.
+- `idSurvey` (Number) : Identifiant unique de l'enquête à supprimer.
 
-- destroyQuestion(collectionName, id)
+**Valeur de Retour** : Un message indiquant si la suppression a réussi ou a échoué.
 
-  Paramètres : Similaires à deleteFichier.
+### Module `questionModule`
 
-**3- reponseModule**
+#### `createQuestion(idSurvey, title, type, options)`
 
-- createReponse(collectionName, data)
+**Description** : Ajoute une nouvelle question à une enquête.
 
-  Paramètres : Similaires à createFichier.
+**Paramètres** :
 
-- readReponse(collectionName, query = {})
+- `idSurvey` (Number) : Identifiant unique de l'enquête à laquelle la question est ajoutée.
+- `title` (String) : Intitulé de la question.
+- `type` (String) : Type de la question (par exemple, `rating`, `boolean`, `multiple choice`).
+- `options` (Object) : Options spécifiques en fonction du type de la question (ex. pour `rating`, `{ minValue: 1, maxValue: 10, step: 1 }`).
 
-  Paramètres : Similaires à readFichier.
+**Valeur de Retour** : Un message indiquant si l'ajout a réussi ou a échoué.
 
-- updateReponse(collectionName, id, updates)
+#### `readAllQuestions()`
 
-  Paramètres : Similaires à updateFichier.
+**Description** : Récupère toutes les questions présentes dans la base de données.
 
-- destroyReponse(collectionName, id)
+**Paramètres** : Aucun.
 
-  Paramètres : Similaires à deleteFichier.
+**Valeur de Retour** : Un tableau d'objets représentant chaque question.
 
-  ## Dépannage
+#### `readQuestionById(idQuestion)`
 
-  **MongoDB**
+**Description** : Récupère une question spécifique par son identifiant.
 
-_Vérifiez que MongoDB est installé, en cours d'exécution, et que les paramètres dans_
-`config/database.js` sont corrects.
+**Paramètres** :
 
-**Dépendances**
+- `idQuestion` (Number) : Identifiant unique de la question.
 
-_Supprimez node_modules et réinstallez avec_ `npm install` si vous rencontrez des erreurs.
+**Valeur de Retour** : L'objet représentant la question correspondante, ou `null` si aucune question n'est trouvée.
 
-**Mise à jour Node.js**
+#### `updateQuestion(idQuestion, updateData)`
 
-_Si vous avez des incompatibilités, mettez à jour Node.js vers la dernière version stable._
+**Description** : Met à jour les informations d'une question existante.
 
-_Si l'application ne démarre pas correctement, assurez-vous que toutes les dépendances sont installées et que MongoDB est en cours d'exécution._
+**Paramètres** :
+
+- `idQuestion` (Number) : Identifiant unique de la question à mettre à jour.
+- `updateData` (Object) : Un objet contenant les nouvelles valeurs pour les propriétés à mettre à jour.
+
+**Valeur de Retour** : Un message indiquant si la mise à jour a réussi ou a échoué.
+
+#### `deleteQuestion(idQuestion)`
+
+**Description** : Supprime une question de la base de données par son identifiant.
+
+**Paramètres** :
+
+- `idQuestion` (Number) : Identifiant unique de la question à supprimer.
+
+**Valeur de Retour** : Un message indiquant si la suppression a réussi ou a échoué.
+
+### Module `answerModule`
+
+#### `createAnswer(idSurvey, idQuestion, options)`
+
+**Description** : Ajoute une nouvelle réponse à une question dans une enquête.
+
+**Paramètres** :
+
+- `idSurvey` (Number) : Identifiant unique de l'enquête à laquelle la réponse est ajoutée.
+- `idQuestion` (Number) : Identifiant unique de la question à laquelle la réponse est associée.
+- `options` (Array) : Un tableau d'objets représentant les réponses possibles.
+
+**Valeur de Retour** : Un message indiquant si l'ajout a réussi ou a échoué.
+
+#### `readAllAnswers()`
+
+**Description** : Récupère toutes les réponses présentes dans la base de données.
+
+**Paramètres** : Aucun.
+
+**Valeur de Retour** : Un tableau d'objets représentant chaque réponse.
+
+#### `readAnswerById(idAnswer)`
+
+**Description** : Récupère une réponse spécifique par son identifiant.
+
+**Paramètres** :
+
+- `idAnswer` (Number) : Identifiant unique de la réponse.
+
+**Valeur de Retour** : L'objet représentant la réponse correspondante, ou `null` si aucune réponse n'est trouvée.
+
+#### `updateAnswer(idAnswer, updateData)`
+
+**Description** : Met à jour les informations d'une réponse existante.
+
+**Paramètres** :
+
+- `idAnswer` (Number) : Identifiant unique de la réponse à mettre à jour.
+- `updateData` (Object
+
+) : Un objet contenant les nouvelles valeurs pour les propriétés à mettre à jour.
+
+**Valeur de Retour** : Un message indiquant si la mise à jour a réussi ou a échoué.
+
+**Exemple d'Utilisation** :
+
+#### `deleteAnswer(idAnswer)`
+
+**Description** : Supprime une réponse de la base de données par son identifiant.
+
+**Paramètres** :
+
+- `idAnswer` (Number) : Identifiant unique de la réponse à supprimer.
+
+**Valeur de Retour** : Un message indiquant si la suppression a réussi ou a échoué.
 
 ## Authors
 
-_Mbaye Abdellahi Kalidou_
+Mbaye Abdellahi kalidou
