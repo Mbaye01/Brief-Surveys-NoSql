@@ -1,76 +1,67 @@
-const { ObjectId } = require("mongodb");
+const { connectDB, getDB } = require("./config/db");
 
 const {
-  createFichier,
-  readFichier,
-  updateFichier,
-  destroyFichier,
-} = require("./fichierModule");
+  insertSurvey,
+  getAllSurveys,
+  getSurveyById,
+  updateSurvey,
+  deleteSurvey,
+} = require("./surveyModule");
+const {
+  createAnswer,
+  readAllAnswers,
+  readAnswerById,
+  updateAnswer,
+  deleteAnswer,
+} = require("./answerModule");
 const {
   createQuestion,
-  readQuestions,
+  readAllQuestions,
+  readQuestionById,
   updateQuestion,
-  destroyQuestion,
+  deleteQuestion,
 } = require("./questionModule");
-const {
-  createReponse,
-  readReponse,
-  updateReponse,
-  destroyReponse,
-} = require("./reponseModule");
 
-(async () => {
-  try {
-    const newQuestionId = await createQuestion({
-      title: "Comment évalueriez-vous notre service ?",
-      type: "rating",
-      options: {
-        minValue: 1,
-        maxValue: 5,
-        step: 1,
-      },
-      answers: [
-        { title: "Très satisfait" },
-        { title: "Satisfait" },
-        { title: "Neutre" },
-        { title: "Insatisfait" },
-        { title: "Très insatisfait" },
-      ],
-    });
-    console.log("Question créée avec succès, ID:", newQuestionId);
+insertSurvey({
+  idSurvey: 1,
+  name: "Enquête de Satisfaction 002",
+  description: "Deuxième enquête visant à évaluer la satisfaction des clients.",
+  createdAt: "2024-08-13T10:00:00Z",
+  createdBy: {
+    employeeName: "Mbaye Abdellahi",
+    employeeRole: "Chef de projet",
+  },
+});
+getAllSurveys();
+getSurveyById(1);
+updateSurvey(1, {
+  name: "Enquête de Satisfaction 002 - Mise à jour",
+  description: "Mise à jour de project.",
+  createdAt: "2024-08-13T10:00:00Z",
+  createdBy: {
+    employeeName: "Abdoul ba",
+    employeeRole: "Developpeur",
+  },
+});
+deleteSurvey(2);
+getAllSurveys();
 
-    const questions = await readQuestions({});
-    console.log("Liste des questions:", questions);
+createQuestion(4, "Quelle est votre satisfaction globale ?", "rating", {
+  minValue: 1,
+  maxValue: 10,
+  step: 1,
+});
+readAllQuestions();
+readQuestionById(1);
+updateQuestion(4, {
+  title: "Comment évalueriez-vous notre service ? (Mise à jour)",
+});
+deleteQuestion(4);
+readAllQuestions();
 
-    const updateCount = await updateQuestion(new ObjectId(newQuestionId), {
-      title: "Comment évalueriez-vous notre service client ?",
-    });
-    console.log(`Nombre de questions mises à jour: ${updateCount}`);
-
-    const deleteCount = await destroyQuestion(new ObjectId(newQuestionId));
-    console.log(`Nombre de questions supprimées: ${deleteCount}`);
-  } catch (error) {
-    console.error("Erreur lors de l'opération:", error);
-  }
-
-  try {
-    const newFichierId = await createFichier({
-      name: "Fichier de test",
-      description: "Ceci est un fichier de test.",
-    });
-    console.log("Fichier créé avec succès, ID:", newFichierId);
-
-    const fichiers = await readFichier({});
-    console.log("Liste des fichiers:", fichiers);
-
-    const updateCount = await updateFichier(new ObjectId(newFichierId), {
-      description: "Description mise à jour.",
-    });
-    console.log(`Nombre de fichiers mis à jour: ${updateCount}`);
-
-    const deleteCount = await destroyFichier(new ObjectId(newFichierId));
-    console.log(`Nombre de fichiers supprimés: ${deleteCount}`);
-  } catch (error) {
-    console.error("Erreur lors de l'opération:", error);
-  }
-})();
+createAnswer(2, 1, [{ title: "Très bien" }]);
+readAllAnswers();
+readAnswerById(1);
+updateAnswer(1, { options: [{ title: "Extrêmement satisfait" }] });
+deleteAnswer(1);
+readAllAnswers();
