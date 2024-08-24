@@ -1,24 +1,6 @@
-const {
-  createSurvey,
-  getSurveys,
-  getSurveyById,
-  updateSurvey,
-  deleteSurvey,
-} = require("./surveyModule");
-const {
-  createQuestion,
-  getQuestions,
-  getQuestionById,
-  updateQuestion,
-  deleteQuestion,
-} = require("./questionModule");
-const {
-  createAnswer,
-  getAnswers,
-  getAnswerById,
-  updateAnswer,
-  deleteAnswer,
-} = require("./answerModule");
+const {createSurvey, getSurveys, getSurveyById, updateSurvey, deleteSurvey,} = require("./surveyModule");
+const {createQuestion, getQuestions, getQuestionById, updateQuestion, deleteQuestion,} = require("./questionModule");
+const {createAnswer, getAnswers, getAnswerById, updateAnswer, deleteAnswer,} = require("./answerModule");
 
 async function run() {
   try {
@@ -31,7 +13,7 @@ async function run() {
       createdAt: "2024-07-25T08:00:00Z",
       createdBy: {
         employeeName: "Mbaye",
-        employeeRole: "Responsable du service client",
+        employeeRole: "Developpeur",
       },
     };
     await createSurvey(newSurvey);
@@ -67,7 +49,7 @@ readAllAnswers();
 
     console.log("\n==== Gestion des Questions ====");
     const newQuestion = {
-      id: 3,
+      id: 1,
       surveyId: 1,
       title: "Comment évalueriez-vous notre service ?",
       type: "rating",
