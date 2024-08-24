@@ -46,6 +46,7 @@ updateSurvey(1, {
 deleteSurvey(2);
 getAllSurveys();
 
+
 createQuestion(4, "Quelle est votre satisfaction globale ?", "rating", {
   minValue: 1,
   maxValue: 10,
@@ -58,6 +59,8 @@ updateQuestion(4, {
 });
 deleteQuestion(4);
 readAllQuestions();
+
+
 
 createAnswer(2, 1, [{ title: "Très bien" }]);
 readAllAnswers();

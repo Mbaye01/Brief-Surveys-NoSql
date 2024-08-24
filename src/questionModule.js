@@ -1,14 +1,12 @@
-const { connectDB } = require("./config/db");
+const { db } = require("./config/db");
+
+const collection = db.collection("questions");
 
 // Fonction pour créer une question
 async function createQuestion(idQuestion, surveyId, questionText, options) {
   try {
-    const db = await connectDB();
-
     // Vérification que l'ID de la question n'existe pas déjà
-    const existingQuestion = await db
-      .collection("questions")
-      .findOne({ idQuestion });
+    const existingQuestion = await collection.findOne({ idQuestion });
     if (existingQuestion) {
       console.log(`Une question avec l'ID ${idQuestion} existe déjà.`);
       return;
@@ -16,9 +14,7 @@ async function createQuestion(idQuestion, surveyId, questionText, options) {
 
     // Vérification que le tableau options existe et n'est pas vide
     if (!options || options.length === 0) {
-      console.log(
-        "Les options doivent être fournies et ne peuvent pas être vides."
-      );
+      console.log("Les options doivent être fournies et ne peuvent pas être vides.");
       return;
     }
 
@@ -28,17 +24,17 @@ async function createQuestion(idQuestion, surveyId, questionText, options) {
       questionText,
       options,
     };
-    await db.collection("questions").insertOne(newQuestion);
+    await collection.insertOne(newQuestion);
     console.log("Question créée avec succès:", newQuestion);
   } catch (err) {
     console.error("Erreur lors de la création de la question:", err);
   }
 }
+
 // Fonction pour lire toutes les questions
 async function readAllQuestions() {
   try {
-    const db = await connectDB();
-    const questions = await db.collection("questions").find().toArray();
+    const questions = await collection.find({}).toArray();
     console.log("Liste des questions:", questions);
   } catch (err) {
     console.error("Erreur lors de la récupération des questions:", err);
@@ -48,8 +44,7 @@ async function readAllQuestions() {
 // Fonction pour lire une question par ID
 async function readQuestionById(idQuestion) {
   try {
-    const db = await connectDB();
-    const question = await db.collection("questions").findOne({ idQuestion });
+    const question = await collection.findOne({ idQuestion });
     if (question) {
       console.log("Question trouvée:", question);
     } else {
@@ -63,24 +58,14 @@ async function readQuestionById(idQuestion) {
 // Fonction pour mettre à jour une question
 async function updateQuestion(idQuestion, updatedData) {
   try {
-    const db = await connectDB();
-
-    // Vérifier si l'ID de la question existe
-    const existingQuestion = await db
-      .collection("questions")
-      .findOne({ idQuestion });
-    if (!existingQuestion) {
-      console.log(`Aucune question trouvée avec l'ID ${idQuestion}.`);
-      return;
-    }
-
-    const result = await db
-      .collection("questions")
-      .updateOne({ idQuestion }, { $set: updatedData });
+    const result = await collection.updateOne(
+      { idQuestion },
+      { $set: updatedData }
+    );
     if (result.matchedCount > 0) {
-      console.log("Question mise à jour avec succès");
+      console.log("Question mise à jour avec succès pour l'ID:", idQuestion);
     } else {
-      console.log("Question non trouvée pour l'ID:", idQuestion);
+      console.log("Aucune question trouvée pour l'ID:", idQuestion);
     }
   } catch (err) {
     console.error("Erreur lors de la mise à jour de la question:", err);
@@ -90,20 +75,9 @@ async function updateQuestion(idQuestion, updatedData) {
 // Fonction pour supprimer une question
 async function deleteQuestion(idQuestion) {
   try {
-    const db = await connectDB();
-
-    // Vérifier si l'ID de la question existe
-    const existingQuestion = await db
-      .collection("questions")
-      .findOne({ idQuestion });
-    if (!existingQuestion) {
-      console.log(`Aucune question trouvée avec l'ID ${idQuestion}.`);
-      return;
-    }
-
-    const result = await db.collection("questions").deleteOne({ idQuestion });
+    const result = await collection.deleteOne({ idQuestion });
     if (result.deletedCount > 0) {
-      console.log("Question supprimée avec succès");
+      console.log("Question supprimée avec succès pour l'ID:", idQuestion);
     } else {
       console.log("Aucune question trouvée pour l'ID:", idQuestion);
     }
@@ -112,6 +86,7 @@ async function deleteQuestion(idQuestion) {
   }
 }
 
+// Export des fonctions pour les utiliser dans d'autres fichiers
 module.exports = {
   createQuestion,
   readAllQuestions,

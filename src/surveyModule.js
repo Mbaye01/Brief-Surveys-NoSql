@@ -1,17 +1,17 @@
-const { connectDB } = require("./config/db");
+const { db } = require("./config/db");
 
-async function insertFichier(fichier) {
-  const db = await connect();
-  const collection = db.collection("(fichiers");
+const collection = db.collection("fichiers");
+
+async function insertSurvey(fichier) {
 
   try {
     const existingFichier = await collection.findOne({
-      idFichier: fichier.idFichier,
+      idSurvey: fichier.idSurvey,
     });
     if (existingFichier) {
       console.log(
         "Une enquête avec cet idSurvey existe déjà:",
-        fichier.idFichier
+        fichier.idSurvey
       );
       return;
     }
@@ -24,68 +24,57 @@ async function insertFichier(fichier) {
   }
 }
 
-async function getAllFichiers() {
-  const db = await connect();
-  const collection = db.collection("fichier)");
-
+async function getAllSurveys() {
   try {
     const fichiers = await collection.find({}).toArray();
-    console.log("Liste des enquêtes:", fichier);
+    console.log("Liste des enquêtes:", fichiers);
   } catch (err) {
     console.error("Erreur lors de la récupération des enquêtes:", err);
   }
 }
 
-async function getFichierById(idFichier) {
-  const db = await connect();
-  const collection = db.collection("fichiers");
-
+async function getSurveyById(idSurvey) {
   try {
-    const fichier = await collection.findOne({ idFichier: idFichier });
+    const fichier = await collection.findOne({ idSurvey: idSurvey });
     if (fichier) {
-      console.log("Enquête trouvée:", fchier);
+      console.log("Enquête trouvée:", fichier);
     } else {
-      console.log("Aucune enquête trouvée pour l'idSurvey:", idFichier);
+      console.log("Aucune enquête trouvée pour l'idSurvey:", idSurvey);
     }
   } catch (err) {
     console.error("Erreur lors de la récupération de l'enquête:", err);
   }
 }
 
-async function updateFichier(idFichier, updatedData) {
-  const db = await connect();
-  const collection = db.collection("fichiers");
+async function updateSurvey(idSurvey, updatedData) {
 
   try {
     const result = await collection.updateOne(
-      { idFichier: idFichier },
+      { idSurvey: idSurvey },
       { $set: updatedData }
     );
 
     if (result.matchedCount > 0) {
       console.log(
-        "Enquête mise à jour avec succès pour l'idFichier:",
-        idFichier
+        "Enquête mise à jour avec succès pour l'idSurvey:",
+        idSurvey
       );
     } else {
-      console.log("Aucune enquête trouvée pour l'idFichier:", idFichier);
+      console.log("Aucune enquête trouvée pour l'idSurvey:", idSurvey);
     }
   } catch (err) {
     console.error("Erreur lors de la mise à jour de l'enquête:", err);
   }
 }
 
-async function deleteFichier(idFichier) {
-  const db = await connect();
-  const collection = db.collection("fichier");
-
+async function deleteSurvey(idSurvey) {
   try {
-    const result = await collection.deleteOne({ idFichier: idFichier });
+    const result = await collection.deleteOne({ idSurvey: idSurvey });
 
     if (result.deletedCount > 0) {
-      console.log("Enquête supprimée avec succès pour l'idSurvey:", idFichier);
+      console.log("Enquête supprimée avec succès pour l'idSurvey:", idSurvey);
     } else {
-      console.log("Aucune enquête trouvée pour l'idSurvey:", idFichier);
+      console.log("Aucune enquête trouvée pour l'idSurvey:", idSurvey);
     }
   } catch (err) {
     console.error("Erreur lors de la suppression de l'enquête:", err);
@@ -94,9 +83,9 @@ async function deleteFichier(idFichier) {
 
 // Export des fonctions pour les utiliser dans d'autres fichiers
 module.exports = {
-  insertFichier,
-  getAllFichiers,
-  getFichierById,
-  updateFichier,
-  deleteFichier,
+  insertSurvey,
+  getAllSurveys,
+  getSurveyById,
+  updateSurvey,
+  deleteSurvey,
 };

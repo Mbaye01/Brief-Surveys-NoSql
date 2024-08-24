@@ -2,6 +2,8 @@ const { MongoClient } = require("mongodb");
 
 const url = "mongodb://127.0.0.1:27017";
 const dbName = "survey_app";
+const client = new MongoClient(url)
+const db = client.db(dbName)
 
 async function connect() {
   const client = new MongoClient(url);
@@ -25,4 +27,4 @@ if (require.main === module) {
   testConnection();
 }
 
-module.exports = { connect };
+module.exports = { db };
