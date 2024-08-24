@@ -8,7 +8,7 @@ Survey App est une application JavaScript simple permettant de gérer les fiches
 
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
-- [ [Node.js](https://nodejs.org/fr)] (version 12 ou supérieure)
+- [ [Node.js](https://nodejs.org/fr)] (version 12 ou superieur)
 - [ MongoDB](https://www.mongodb.com/try/download/community)
   (version 4.0 ou supérieure)
 
