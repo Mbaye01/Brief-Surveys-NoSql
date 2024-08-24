@@ -68,13 +68,13 @@ const result = await createSurvey(newSurvey);
 
 Description : Récupère toutes les enquêtes.
 
-`const surveys = await getSurveys();`
+`await getSurveys();`
 
 `getSurveyById(id)`
 
 Description : Récupère une enquête spécifique en fonction de son id.
 
-`const survey = await getSurveyById(1);`
+`await getSurveyById(1);`
 
 `updateSurvey(id, update)`
 
@@ -114,20 +114,25 @@ const result = await createQuestion(newQuestion);
 
 Description : Récupère toutes les questions.
 
-`const questions = await getQuestions();`
+```
+const questions = await getQuestions();
+console.log(questions);
+```
 
 `getQuestionById(id)`
 
 Description : Récupère une question spécifique en fonction de son id.
 
-```const question = await getQuestionById(1);
-updateQuestion(id, update)
 ```
+await getQuestionById(1);
+```
+
+`updateQuestion(id, update)`
 
 Description : Met à jour une question existante avec de nouvelles informations.
 
-```await updateQuestion(1, { title: "Comment avez-vous entendu parler de nous ?" });
-
+```
+await updateQuestion(1, { title: "Comment avez-vous entendu parler de nous ?" });
 ```
 
 `deleteQuestion(id)`
@@ -155,19 +160,25 @@ const result = await createAnswer(newAnswer);
 
 Description : Récupère toutes les réponses.
 
-`const answers = await getAnswers();`
+```
+const answers = await getAnswers();
+```
 
 `getAnswerById(id)`
 
 Description : Récupère une réponse spécifique en fonction de son id.
 
-`const answer = await getAnswerById(1);`
+```
+const answer = await getAnswerById(1);
+```
 
 `updateAnswer(id, update)`
 
 Description : Met à jour une réponse existante avec de nouvelles informations.
 
-`await updateAnswer(1, { title: "Très satisfait" });`
+```
+await updateAnswer(1, { title: "Très satisfait" });
+```
 
 `deleteAnswer(id)`
 
