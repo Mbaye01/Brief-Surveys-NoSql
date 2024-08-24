@@ -1,44 +1,39 @@
-# ABC-SURVEY-APP
+Gestion des Enquêtes
 
-## Description
+### Description
 
-Survey App est une application JavaScript simple permettant de gérer les fiches d'enquête de satisfaction des clients. L'application utilise une base de données MongoDB pour stocker les données et permet d'effectuer des opérations CRUD (Create, Read, Update, Delete) sur ces fiches d'enquête, questions et réponses.
+Ce projet est une application JavaScript permettant de gérer des enquêtes de satisfaction des clients. L'application utilise une structure modulaire pour effectuer des opérations CRUD (Create, Get, Update, Delete) sur les enquêtes, les questions, et les réponses associées.
 
 ## Prérequis
 
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
-- [Node.js](https://nodejs.org/) (version 12 ou supérieure)
-- [MongoDB](https://www.mongodb.com/try/download/community) (version 4.0 ou supérieure)
+- Node.js (version 12 ou supérieure)
 
 ## Installation
 
 Suivez ces étapes pour configurer le projet sur votre machine locale :
 
-1. **Clonez le repository :**
+**Clonez le repository :**
 
-   ```bash
-   git clone (https://github.com/Mbaye01/Brief-Surveys-NoSql.git)
-   ```
+```bash
+git clone <https://github.com/Mbaye01/Brief-Surveys-NoSql.git>
 
-2. **Accédez au dossier du projet :**
+```
 
-   ```bash
-   cd abc_corporation_app
-   ```
+**Accédez au dossier du projet :**
 
-3. **Installez les dépendances :**
+```bash
+cd Brief-Surveys-NoSql
+```
 
-   ```bash
-   npm install
-   ```
+**Installez les dépendances :**
 
-4. **Configurez la base de données :**
+```bash
+npm install
+```
 
-   - Assurez-vous que MongoDB est en cours d'exécution sur votre machine locale.
-   - Mettez les paramètres de connexion dans `config/db.js`.
-
-## Utilisation
+**Utilisation**
 
 Pour démarrer l'application, exécutez la commande suivante :
 
@@ -46,187 +41,142 @@ Pour démarrer l'application, exécutez la commande suivante :
 npm start
 ```
 
-Ou en accedant au dossier src
+**Documentation des Modules et Fonctions**
 
-```bash
-cd src
+**Module :** `Survey`
+Ce module gère les enquêtes elles-mêmes.
+
+`createSurvey(survey)`
+
+Description : cette function permet de Crée une nouvelle enquête.
+
+```Crée une nouvelle enquête
+const newSurvey = {
+  id: 1,
+  name: "Enquête de Satisfaction 001",
+  description: "Enquête visant à évaluer la satisfaction des clients concernant nos services.",
+  createdAt: "2024-07-25T08:00:00Z",
+  createdBy: {
+    employeeName: "Mbaye",
+    employeeRole: "Responsable du service client"
+  }
+};
+const result = await createSurvey(newSurvey);
 ```
 
-```bash
-node index.js
+`getSurveys()`
+
+Description : Récupère toutes les enquêtes.
+
+`const surveys = await getSurveys();`
+
+`getSurveyById(id)`
+
+Description : Récupère une enquête spécifique en fonction de son id.
+
+`const survey = await getSurveyById(1);`
+
+`updateSurvey(id, update)`
+
+Description : Met à jour une enquête existante avec de nouvelles informations.
+
+`await updateSurvey(1, { name: "Enquête de Satisfaction Mise à Jour" });`
+
+`deleteSurvey(id)`
+
+Description : Supprime une enquête de la collection surveys en fonction de son id.
+
+`await deleteSurvey(1);`
+
+**Module** : `Question`
+
+Ce module gère les questions dans les enquêtes.
+
+`createQuestion(question)`
+
+Description : Crée une nouvelle question dans une enquête.
+
+```const newQuestion = {
+  id: 1,
+  surveyId: 1,
+  title: "Comment évalueriez-vous notre service ?",
+  type: "rating",
+  options: {
+    minValue: 1,
+    maxValue: 5,
+    step: 1
+  }
+};
+const result = await createQuestion(newQuestion);
 ```
 
-## Documentation des Fonctions
+`getQuestions()`
 
-### Module `surveyModule`
+Description : Récupère toutes les questions.
 
-#### `insertSurvey(survey)`
+`const questions = await getQuestions();`
 
-**Description** : Ajoute une nouvelle enquête dans la base de données.
+`getQuestionById(id)`
 
-**Paramètres** :
+Description : Récupère une question spécifique en fonction de son id.
 
-- `survey` (Object) : Un objet représentant l'enquête avec les propriétés suivantes :
-  - `idSurvey` (Number) : Identifiant unique de l'enquête.
-  - `name` (String) : Nom de l'enquête.
-  - `description` (String) : Description de l'enquête.
-  - `createdAt` (String) : Date de création de l'enquête.
-  - `createdBy` (Object) : Informations sur la personne ayant créé l'enquête, avec les propriétés :
-    - `employeeName` (String) : Nom de l'employé.
-    - `employeeRole` (String) : Rôle de l'employé.
+```const question = await getQuestionById(1);
+updateQuestion(id, update)
+```
 
-**Valeur de Retour** : Un message indiquant si l'ajout a réussi ou a échoué.
+Description : Met à jour une question existante avec de nouvelles informations.
 
-#### `getAllSurveys()`
+```await updateQuestion(1, { title: "Comment avez-vous entendu parler de nous ?" });
 
-**Description** : Récupère toutes les enquêtes présentes dans la base de données.
+```
 
-**Paramètres** : Aucun.
+`deleteQuestion(id)`
 
-**Valeur de Retour** : Un tableau d'objets représentant chaque enquête.
+Description : Supprime une question de la collection survey_questions en fonction de son id.
 
-#### `getSurveyById(idSurvey)`
+`await deleteQuestion(1);`
 
-**Description** : Récupère une enquête spécifique par son identifiant.
+**Module :** `Answer`
+Ce module gère les réponses associées aux questions dans les enquêtes.
 
-**Paramètres** :
+`createAnswer(answer)`
 
-- `idSurvey` (Number) : Identifiant unique de l'enquête.
+Description : Crée une nouvelle réponse pour une question dans une enquête.
 
-**Valeur de Retour** : L'objet représentant l'enquête correspondante, ou `null` si aucune enquête n'est trouvée.
+```const newAnswer = {
+  id: 1,
+  questionId: 1,
+  title: "Satisfait",
+};
+const result = await createAnswer(newAnswer);
+```
 
-#### `updateSurvey(idSurvey, updateData)`
+`getAnswers()`
 
-**Description** : Met à jour les informations d'une enquête existante.
+Description : Récupère toutes les réponses.
 
-**Paramètres** :
+`const answers = await getAnswers();`
 
-- `idSurvey` (Number) : Identifiant unique de l'enquête à mettre à jour.
-- `updateData` (Object) : Un objet contenant les nouvelles valeurs pour les propriétés à mettre à jour.
+`getAnswerById(id)`
 
-**Valeur de Retour** : Un message indiquant si la mise à jour a réussi ou a échoué.
+Description : Récupère une réponse spécifique en fonction de son id.
 
-#### `deleteSurvey(idSurvey)`
+`const answer = await getAnswerById(1);`
 
-**Description** : Supprime une enquête de la base de données par son identifiant.
+`updateAnswer(id, update)`
 
-**Paramètres** :
+Description : Met à jour une réponse existante avec de nouvelles informations.
 
-- `idSurvey` (Number) : Identifiant unique de l'enquête à supprimer.
+`await updateAnswer(1, { title: "Très satisfait" });`
 
-**Valeur de Retour** : Un message indiquant si la suppression a réussi ou a échoué.
+`deleteAnswer(id)`
 
-### Module `questionModule`
+Description : Supprime une réponse de la collection survey_answers en fonction de son id.
 
-#### `createQuestion(idSurvey, title, type, options)`
-
-**Description** : Ajoute une nouvelle question à une enquête.
-
-**Paramètres** :
-
-- `idSurvey` (Number) : Identifiant unique de l'enquête à laquelle la question est ajoutée.
-- `title` (String) : Intitulé de la question.
-- `type` (String) : Type de la question (par exemple, `rating`, `boolean`, `multiple choice`).
-- `options` (Object) : Options spécifiques en fonction du type de la question (ex. pour `rating`, `{ minValue: 1, maxValue: 10, step: 1 }`).
-
-**Valeur de Retour** : Un message indiquant si l'ajout a réussi ou a échoué.
-
-#### `readAllQuestions()`
-
-**Description** : Récupère toutes les questions présentes dans la base de données.
-
-**Paramètres** : Aucun.
-
-**Valeur de Retour** : Un tableau d'objets représentant chaque question.
-
-#### `readQuestionById(idQuestion)`
-
-**Description** : Récupère une question spécifique par son identifiant.
-
-**Paramètres** :
-
-- `idQuestion` (Number) : Identifiant unique de la question.
-
-**Valeur de Retour** : L'objet représentant la question correspondante, ou `null` si aucune question n'est trouvée.
-
-#### `updateQuestion(idQuestion, updateData)`
-
-**Description** : Met à jour les informations d'une question existante.
-
-**Paramètres** :
-
-- `idQuestion` (Number) : Identifiant unique de la question à mettre à jour.
-- `updateData` (Object) : Un objet contenant les nouvelles valeurs pour les propriétés à mettre à jour.
-
-**Valeur de Retour** : Un message indiquant si la mise à jour a réussi ou a échoué.
-
-#### `deleteQuestion(idQuestion)`
-
-**Description** : Supprime une question de la base de données par son identifiant.
-
-**Paramètres** :
-
-- `idQuestion` (Number) : Identifiant unique de la question à supprimer.
-
-**Valeur de Retour** : Un message indiquant si la suppression a réussi ou a échoué.
-
-### Module `answerModule`
-
-#### `createAnswer(idSurvey, idQuestion, options)`
-
-**Description** : Ajoute une nouvelle réponse à une question dans une enquête.
-
-**Paramètres** :
-
-- `idSurvey` (Number) : Identifiant unique de l'enquête à laquelle la réponse est ajoutée.
-- `idQuestion` (Number) : Identifiant unique de la question à laquelle la réponse est associée.
-- `options` (Array) : Un tableau d'objets représentant les réponses possibles.
-
-**Valeur de Retour** : Un message indiquant si l'ajout a réussi ou a échoué.
-
-#### `readAllAnswers()`
-
-**Description** : Récupère toutes les réponses présentes dans la base de données.
-
-**Paramètres** : Aucun.
-
-**Valeur de Retour** : Un tableau d'objets représentant chaque réponse.
-
-#### `readAnswerById(idAnswer)`
-
-**Description** : Récupère une réponse spécifique par son identifiant.
-
-**Paramètres** :
-
-- `idAnswer` (Number) : Identifiant unique de la réponse.
-
-**Valeur de Retour** : L'objet représentant la réponse correspondante, ou `null` si aucune réponse n'est trouvée.
-
-#### `updateAnswer(idAnswer, updateData)`
-
-**Description** : Met à jour les informations d'une réponse existante.
-
-**Paramètres** :
-
-- `idAnswer` (Number) : Identifiant unique de la réponse à mettre à jour.
-- `updateData` (Object
-
-) : Un objet contenant les nouvelles valeurs pour les propriétés à mettre à jour.
-
-**Valeur de Retour** : Un message indiquant si la mise à jour a réussi ou a échoué.
-
-**Exemple d'Utilisation** :
-
-#### `deleteAnswer(idAnswer)`
-
-**Description** : Supprime une réponse de la base de données par son identifiant.
-
-**Paramètres** :
-
-- `idAnswer` (Number) : Identifiant unique de la réponse à supprimer.
-
-**Valeur de Retour** : Un message indiquant si la suppression a réussi ou a échoué.
+```
+await deleteAnswer(1);
+```
 
 ## Authors
 
-Mbaye Abdellahi kalidou
+[Mbaye Abdoulaye Kalidou](https://github.com/Mbaye01)
