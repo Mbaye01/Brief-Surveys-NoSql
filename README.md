@@ -1,14 +1,16 @@
-Gestion des Enquêtes
+## Survey App
 
-### Description
+## Description
 
-Ce projet est une application JavaScript permettant de gérer des enquêtes de satisfaction des clients. L'application utilise une structure modulaire pour effectuer des opérations CRUD (Create, Get, Update, Delete) sur les enquêtes, les questions, et les réponses associées.
+Survey App est une application JavaScript simple permettant de gérer les fiches d'enquête de satisfaction des clients. L'application utilise une base de données MongoDB pour stocker les données et permet d'effectuer des opérations CRUD (Create, Get, Update, Delete) sur ces fiches.
 
 ## Prérequis
 
 Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
-- Node.js (version 12 ou supérieure)
+- [ [Node.js](https://nodejs.org/fr)] (version 12 ou supérieure)
+- [ MongoDB](https://www.mongodb.com/try/download/community)
+  (version 4.0 ou supérieure)
 
 ## Installation
 
