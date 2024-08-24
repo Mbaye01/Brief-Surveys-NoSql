@@ -1,108 +1,85 @@
-const { connectDB } = require("./config/db");
 
-// Fonction pour créer une nouvelle réponse
-async function createAnswer(idAnswer, questionId, options) {
-  try {
+const { connectDB } = require('./config/database');
+
+async function createAnswer(answer) {
     const db = await connectDB();
+    const collection = db.collection('survey_answers');
 
-    // Vérifier si l'ID de la réponse existe déjà
-    const existingAnswer = await db.collection("answers").findOne({ idAnswer });
-    if (existingAnswer) {
-      console.log(`Une réponse avec l'ID ${idAnswer} existe déjà.`);
-      return;
+    try {
+        
+        const existingAnswer = await collection.findOne({ id: answer.id });
+        if (existingAnswer) {
+            throw new Error('Une réponse avec cet ID existe déjà.');
+        }
+
+        const result = await collection.insertOne(answer);
+        console.log(`Réponse ajoutée avec succès : ${answer.title} (ID: ${answer.id})`);
+        return result;
+    } catch (err) {
+        console.error('Erreur lors de la création de la réponse :', err);
+        throw err;
     }
-
-    const newAnswer = {
-      idAnswer,
-      questionId,
-      options,
-    };
-    await db.collection("answers").insertOne(newAnswer);
-    console.log("Réponse créée avec succès:", newAnswer);
-  } catch (err) {
-    console.error("Erreur lors de la création de la réponse:", err);
-  }
 }
 
-// Fonction pour lire toutes les réponses
-async function readAllAnswers() {
-  try {
+async function getAnswers() {
     const db = await connectDB();
-    const answers = await db.collection("answers").find().toArray();
-    console.log("Liste des réponses:", answers);
-  } catch (err) {
-    console.error("Erreur lors de la récupération des réponses:", err);
-  }
+    const collection = db.collection('survey_answers');
+    try {
+        const answers = await collection.find().toArray();
+        console.log(`Total de ${answers.length} réponses trouvées :`, answers);
+        return answers;
+    } catch (err) {
+        console.error('Erreur lors de la récupération des réponses :', err);
+        throw err;
+    }
 }
 
-// Fonction pour lire une réponse par son ID
-async function readAnswerById(idAnswer) {
-  try {
+async function getAnswerById(id) {
     const db = await connectDB();
-    const answer = await db.collection("answers").findOne({ idAnswer });
-    if (answer) {
-      console.log("Réponse trouvée:", answer);
-    } else {
-      console.log("Réponse non trouvée pour l'ID:", idAnswer);
+    const collection = db.collection('survey_answers');
+    try {
+        const answer = await collection.findOne({ id: id });
+        if (!answer) {
+            throw new Error(`Réponse avec l'ID ${id} introuvable.`);
+        }
+        console.log(`Réponse trouvée avec l'ID ${id} :`, answer);
+        return answer;
+    } catch (err) {
+        console.error('Erreur lors de la récupération de la réponse par ID :', err);
+        throw err;
     }
-  } catch (err) {
-    console.error("Erreur lors de la récupération de la réponse:", err);
-  }
 }
 
-// Fonction pour mettre à jour une réponse
-async function updateAnswer(idAnswer, updatedData) {
-  try {
+async function updateAnswer(id, update) {
     const db = await connectDB();
-
-    // Vérifier si l'ID de la réponse existe
-    const existingAnswer = await db.collection("answers").findOne({ idAnswer });
-    if (!existingAnswer) {
-      console.log(`Aucune réponse trouvée avec l'ID ${idAnswer}.`);
-      return;
+    const collection = db.collection('survey_answers');
+    try {
+        const result = await collection.updateOne({ id: id }, { $set: update });
+        if (result.matchedCount === 0) {
+            throw new Error(`Réponse avec l'ID ${id} introuvable.`);
+        }
+        console.log(`Réponse avec l'ID ${id} mise à jour avec succès.`);
+        return result;
+    } catch (err) {
+        console.error('Erreur lors de la mise à jour de la réponse :', err);
+        throw err;
     }
-
-    const result = await db
-      .collection("answers")
-      .updateOne({ idAnswer }, { $set: updatedData });
-    if (result.matchedCount > 0) {
-      console.log("Réponse mise à jour avec succès:", updatedData);
-    } else {
-      console.log("Réponse non trouvée pour l'ID:", idAnswer);
-    }
-  } catch (err) {
-    console.error("Erreur lors de la mise à jour de la réponse:", err);
-  }
 }
 
-// Fonction pour supprimer une réponse
-async function deleteAnswer(idAnswer) {
-  try {
+async function deleteAnswer(id) {
     const db = await connectDB();
-
-    // Vérifier si l'ID de la réponse existe
-    const existingAnswer = await db.collection("answers").findOne({ idAnswer });
-    if (!existingAnswer) {
-      console.log(`Aucune réponse trouvée avec l'ID ${idAnswer}.`);
-      return;
+    const collection = db.collection('survey_answers');
+    try {
+        const result = await collection.deleteOne({ id: id });
+        if (result.deletedCount === 0) {
+            throw new Error(`Réponse avec l'ID ${id} introuvable.`);
+        }
+        console.log(`Réponse avec l'ID ${id} supprimée avec succès.`);
+        return result;
+    } catch (err) {
+        console.error('Erreur lors de la suppression de la réponse :', err);
+        throw err;
     }
-
-    const result = await db.collection("answers").deleteOne({ idAnswer });
-    if (result.deletedCount > 0) {
-      console.log("Réponse supprimée avec succès pour l'ID:", idAnswer);
-    } else {
-      console.log("Réponse non trouvée pour l'ID:", idAnswer);
-    }
-  } catch (err) {
-    console.error("Erreur lors de la suppression de la réponse:", err);
-  }
 }
 
-// Exporter les fonctions pour les utiliser dans d'autres fichiers
-module.exports = {
-  createAnswer,
-  readAllAnswers,
-  readAnswerById,
-  updateAnswer,
-  deleteAnswer,
-};
+module.exports = { createAnswer, getAnswers, getAnswerById, updateAnswer, deleteAnswer };
