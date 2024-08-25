@@ -18,6 +18,30 @@ async function run() {
     };
     await createSurvey(newSurvey);
 
+<<<<<<< HEAD
+
+createQuestion(4, "Quelle est votre satisfaction globale ?", "rating", {
+  minValue: 1,
+  maxValue: 10,
+  step: 1,
+});
+readAllQuestions();
+readQuestionById(1);
+updateQuestion(4, {
+  title: "Comment évalueriez-vous notre service ? (Mise à jour)",
+});
+deleteQuestion(4);
+readAllQuestions();
+
+
+
+createAnswer(2, 1, [{ title: "Très bien" }]);
+readAllAnswers();
+readAnswerById(1);
+updateAnswer(1, { options: [{ title: "Extrêmement satisfait" }] });
+deleteAnswer(1);
+readAllAnswers();
+=======
     await getSurveys();
     await updateSurvey(1, { name: "Enquête de Satisfaction Mise à Jour" });
     await getSurveyById(1);
@@ -62,3 +86,4 @@ async function run() {
 }
 
 run();
+>>>>>>> 812b2de2507821b84fdc2583e98f290f104f677d
