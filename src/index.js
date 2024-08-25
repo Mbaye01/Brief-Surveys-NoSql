@@ -13,7 +13,7 @@ async function run() {
       createdAt: "2024-07-25T08:00:00Z",
       createdBy: {
         employeeName: "Mbaye",
-        employeeRole: "Developpeur",
+        employeeRole: "Responsable du service client",
       },
     };
     await createSurvey(newSurvey);
