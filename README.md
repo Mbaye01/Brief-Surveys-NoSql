@@ -52,6 +52,28 @@ Ce module gère les enquêtes elles-mêmes.
 
 Description : cette function permet de Crée une nouvelle enquête.
 
+Paramètres :
+
+```survey (Object)```:
+Un objet représentant l'enquête avec les propriétés suivantes :
+
+```idSurvey (Number)``` : Identifiant unique de l'enquête.
+
+```name (String)``` : Nom de l'enquête.
+
+```description (String)``` : Description de l'enquête.
+
+```createdAt (String)``` : Date de création de l'enquête.
+
+```createdBy (Object)```: Informations sur la personne ayant créé l'enquête,
+ avec les propriétés :
+
+```employeeName (String)``` : Nom de l'employé.
+```employeeRole (String)``` : Rôle de l'employé.
+```Valeur de Retour``` : Un message indiquant si l'ajout a réussi ou a échoué.
+
+Exemple
+
 ```Crée une nouvelle enquête
 const newSurvey = {
   id: 1,
@@ -70,25 +92,19 @@ const result = await createSurvey(newSurvey);
 
 Description : Récupère toutes les enquêtes.
 
-`await getSurveys();`
 
 `getSurveyById(id)`
 
 Description : Récupère une enquête spécifique en fonction de son id.
 
-`await getSurveyById(1);`
 
 `updateSurvey(id, update)`
 
 Description : Met à jour une enquête existante avec de nouvelles informations.
 
-`await updateSurvey(1, { name: "Enquête de Satisfaction Mise à Jour" });`
-
 `deleteSurvey(id)`
 
 Description : Supprime une enquête de la collection surveys en fonction de son id.
-
-`await deleteSurvey(1);`
 
 **Module** : `Question`
 
@@ -97,6 +113,8 @@ Ce module gère les questions dans les enquêtes.
 `createQuestion(question)`
 
 Description : Crée une nouvelle question dans une enquête.
+
+Exemple
 
 ```const newQuestion = {
   id: 1,
@@ -141,14 +159,14 @@ await updateQuestion(1, { title: "Comment avez-vous entendu parler de nous ?" })
 
 Description : Supprime une question de la collection survey_questions en fonction de son id.
 
-`await deleteQuestion(1);`
-
 **Module :** `Answer`
 Ce module gère les réponses associées aux questions dans les enquêtes.
 
 `createAnswer(answer)`
 
 Description : Crée une nouvelle réponse pour une question dans une enquête.
+
+Exemple
 
 ```const newAnswer = {
   id: 1,
@@ -178,17 +196,11 @@ const answer = await getAnswerById(1);
 
 Description : Met à jour une réponse existante avec de nouvelles informations.
 
-```
-await updateAnswer(1, { title: "Très satisfait" });
-```
 
 `deleteAnswer(id)`
 
 Description : Supprime une réponse de la collection survey_answers en fonction de son id.
 
-```
-await deleteAnswer(1);
-```
 
 ## Authors
 
