@@ -19,7 +19,7 @@ Suivez ces étapes pour configurer le projet sur votre machine locale :
 **Clonez le repository :**
 
 ```bash
-git clone <https://github.com/Mbaye01/Brief-Surveys-NoSql.git>
+git clone https://github.com/Mbaye01/Brief-Surveys-NoSql.git
 
 ```
 
@@ -69,13 +69,15 @@ Un objet représentant l'enquête avec les propriétés suivantes :
  avec les propriétés :
 
 ```employeeName (String)``` : Nom de l'employé.
+
 ```employeeRole (String)``` : Rôle de l'employé.
+
 ```Valeur de Retour``` : Un message indiquant si l'ajout a réussi ou a échoué.
 
 Exemple
 
 ```Crée une nouvelle enquête
-const newSurvey = {
+const newSurvey{
   id: 1,
   name: "Enquête de Satisfaction 001",
   description: "Enquête visant à évaluer la satisfaction des clients concernant nos services.",
@@ -85,7 +87,6 @@ const newSurvey = {
     employeeRole: "Responsable du service client"
   }
 };
-const result = await createSurvey(newSurvey);
 ```
 
 `getSurveys()`
@@ -127,7 +128,6 @@ Exemple
     step: 1
   }
 };
-const result = await createQuestion(newQuestion);
 ```
 
 `getQuestions()`

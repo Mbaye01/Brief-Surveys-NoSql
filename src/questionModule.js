@@ -1,192 +1,102 @@
 const { connectDB } = require('./config/database');
 
-async function createQuestion(question) {
+async function createQuestion(idQuestion, surveyId, questionText, options) {
     const db = await connectDB();
     const collection = db.collection('survey_questions');
 
     try {
-        // Vérification que la question a un ID valide
-        if (!question || !question.id) {
-            throw new Error('La question doit avoir un ID valide.');
-        }
-
-        const existingQuestion = await collection.findOne({ id: question.id });
-        const { connectDB } = require('./config/database');
-        
-        async function createQuestion(question) {
-            const db = await connectDB();
-            const collection = db.collection('survey_questions');
-        
-            try {
-                
-                const existingQuestion = await collection.findOne({ id: question.id });
-                if (existingQuestion) {
-                    throw new Error('Une question avec cet ID existe déjà.');
-                }
-        
-                const result = await collection.insertOne(question);
-                console.log(`Question ajoutée avec succès : ${question.title} (ID: ${question.id})`);
-                return result;
-            } catch (err) {
-                console.error('Erreur lors de la création de la question :', err);
-                throw err;
-            }
-        }
-        
-        async function getQuestions() {
-            const db = await connectDB();
-            const collection = db.collection('survey_questions');
-            try {
-                const questions = await collection.find().toArray();
-                console.log(`Total de ${questions.length} questions trouvées :`, questions);
-                return questions;
-            } catch (err) {
-                console.error('Erreur lors de la récupération des questions :', err);
-                throw err;
-            }
-        }
-        
-        async function getQuestionById(id) {
-            const db = await connectDB();
-            const collection = db.collection('survey_questions');
-            try {
-                const question = await collection.findOne({id: id });
-                if (!question) {
-                    throw new Error(`Question avec l'ID ${id} introuvable.`);
-                }
-                console.log(`Question trouvée avec l'ID ${id} :`, question);
-                return question;
-            } catch (err) {
-                console.error('Erreur lors de la récupération de la question par ID :', err);
-                throw err;
-            }
-        }
-        
-        async function updateQuestion(id, update) {
-            const db = await connectDB();
-            const collection = db.collection('survey_questions');
-            try {
-                const result = await collection.updateOne({ id: id }, { $set: update });
-                if (result.matchedCount === 0) {
-                    throw new Error(`Question avec l'ID ${id} introuvable.`);
-                }
-                console.log(`Question avec l'ID ${id} mise à jour avec succès.`);
-                return result;
-            } catch (err) {
-                console.error('Erreur lors de la mise à jour de la question :', err);
-                throw err;
-            }
-        }
-        
-        async function deleteQuestion(id) {
-            const db = await connectDB();
-            const collection = db.collection('survey_questions');
-            try {
-                const result = await collection.deleteOne({ id: id });
-                if (result.deletedCount === 0) {
-                    throw new Error(`Question avec l'ID ${id} introuvable.`);
-                }
-                console.log(`Question avec l'ID ${id} supprimée avec succès.`);
-                return result;
-            } catch (err) {
-                console.error('Erreur lors de la suppression de la question :', err);
-                throw err;
-            }
-        }
-        
-        module.exports = { createQuestion, getQuestions, getQuestionById, updateQuestion, deleteQuestion };
-        
+        // Vérification que l'ID de la question n'existe pas déjà
+        const existingQuestion = await collection.findOne({ idQuestion });
         if (existingQuestion) {
-            throw new Error('Une question avec cet ID existe déjà.');
+            console.log(`Une question avec l'ID ${idQuestion} existe déjà.`);
+            return;
         }
 
-        const result = await collection.insertOne(question);
-        console.log(`Question ajoutée avec succès : ${question.title} (ID: ${question.id})`);
-        return result;
+        // Vérification que le tableau options existe et n'est pas vide
+        if (!options || options.length === 0) {
+            console.log("Les options doivent être fournies et ne peuvent pas être vides.");
+            return;
+        }
+
+        const newQuestion = {
+            idQuestion,
+            surveyId,
+            questionText,
+            options,
+        };
+        await collection.insertOne(newQuestion);
+        console.log("Question créée avec succès:", newQuestion);
     } catch (err) {
-        console.error('Erreur lors de la création de la question :', err);
-        throw err;
+        console.error("Erreur lors de la création de la question:", err);
     }
 }
 
-async function getQuestions() {
+async function readAllQuestions() {
     const db = await connectDB();
     const collection = db.collection('survey_questions');
 
     try {
-        const questions = await collection.find().toArray();
-        console.log(`Total de ${questions.length} questions trouvées :`, questions);
-        return questions;
+        const questions = await collection.find({}).toArray();
+        console.log("Liste des questions:", questions);
     } catch (err) {
-        console.error('Erreur lors de la récupération des questions :', err);
-        throw err;
+        console.error("Erreur lors de la récupération des questions:", err);
     }
 }
 
-async function getQuestionById(id) {
+async function readQuestionById(idQuestion) {
     const db = await connectDB();
     const collection = db.collection('survey_questions');
 
     try {
-        if (!id) {
-            throw new Error('L\'ID de la question doit être fourni.');
+        const question = await collection.findOne({ idQuestion });
+        if (question) {
+            console.log("Question trouvée:", question);
+        } else {
+            console.log("Question non trouvée pour l'ID:", idQuestion);
         }
-
-        const question = await collection.findOne({ id: id });
-        if (!question) {
-            throw new Error(`Question avec l'ID ${id} introuvable.`);
-        }
-
-        console.log(`Question trouvée avec l'ID ${id} :`, question);
-        return question;
     } catch (err) {
-        console.error('Erreur lors de la récupération de la question par ID :', err);
-        throw err;
+        console.error("Erreur lors de la récupération de la question:", err);
     }
 }
 
-async function updateQuestion(id, update) {
+async function updateQuestion(idQuestion, updatedData) {
     const db = await connectDB();
     const collection = db.collection('survey_questions');
 
     try {
-        if (!id || !update) {
-            throw new Error('L\'ID et les données de mise à jour doivent être fournis.');
+        const result = await collection.updateOne(
+            { idQuestion },
+            { $set: updatedData }
+        );
+        if (result.matchedCount > 0) {
+            console.log("Question mise à jour avec succès pour l'ID:", idQuestion);
+        } else {
+            console.log("Aucune question trouvée pour l'ID:", idQuestion);
         }
-
-        const result = await collection.updateOne({ id: id }, { $set: update });
-        if (result.matchedCount === 0) {
-            throw new Error(`Question avec l'ID ${id} introuvable.`);
-        }
-
-        console.log(`Question avec l'ID ${id} mise à jour avec succès.`);
-        return result;
     } catch (err) {
-        console.error('Erreur lors de la mise à jour de la question :', err);
-        throw err;
+        console.error("Erreur lors de la mise à jour de la question:", err);
     }
 }
 
-async function deleteQuestion(id) {
+async function deleteQuestion(idQuestion) {
     const db = await connectDB();
     const collection = db.collection('survey_questions');
 
     try {
-        if (!id) {
-            throw new Error('L\'ID de la question doit être fourni.');
-        }
-
-        const result = await collection.deleteOne({ id: id });
-        if (result.deletedCount === 0) {
-            throw new Error(`Question avec l'ID ${id} introuvable.`);
-        }
-
-        console.log(`Question avec l'ID ${id} supprimée avec succès.`);
-        return result;
+        const result = await collection.deleteOne({ idQuestion });
+        if (result.deletedCount > 0) {
+            console.log("Question supprimée avec succès pour l'ID:", idQuestion);
+        } 
+           
     } catch (err) {
-        console.error('Erreur lors de la suppression de la question :', err);
-        throw err;
+        console.error("Erreur lors de la suppression de la question:", err);
     }
 }
 
-module.exports = { createQuestion, getQuestions, getQuestionById, updateQuestion, deleteQuestion };
+module.exports = {
+    createQuestion,
+    readAllQuestions,
+    readQuestionById,
+    updateQuestion,
+    deleteQuestion,
+};
