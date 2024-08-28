@@ -16,6 +16,7 @@ Avant de commencer, assurez-vous d'avoir installé les éléments suivants :
 
 Suivez ces étapes pour configurer le projet sur votre machine locale :
 
+
 **Clonez le repository :**
 
 ```bash
@@ -43,164 +44,131 @@ Pour démarrer l'application, exécutez la commande suivante :
 npm start
 ```
 
-**Documentation des Modules et Fonctions**
+### 5. ***Documentation des Fonctions***
 
-**Module :** `Survey`
-Ce module gère les enquêtes elles-mêmes.
-
-`createSurvey(survey)`
-
-Description : cette function permet de Crée une nouvelle enquête.
-
-Paramètres :
-
-```survey (Object)```:
-Un objet représentant l'enquête avec les propriétés suivantes :
-
-```idSurvey (Number)``` : Identifiant unique de l'enquête.
-
-```name (String)``` : Nom de l'enquête.
-
-```description (String)``` : Description de l'enquête.
-
-```createdAt (String)``` : Date de création de l'enquête.
-
-```createdBy (Object)```: Informations sur la personne ayant créé l'enquête,
- avec les propriétés :
-
-```employeeName (String)``` : Nom de l'employé.
-
-```employeeRole (String)``` : Rôle de l'employé.
-
-```Valeur de Retour``` : Un message indiquant si l'ajout a réussi ou a échoué.
-
-Exemple
-
-```Crée une nouvelle enquête
-const newSurvey{
-  id: 1,
-  name: "Enquête de Satisfaction 001",
-  description: "Enquête visant à évaluer la satisfaction des clients concernant nos services.",
-  createdAt: "2024-07-25T08:00:00Z",
-  createdBy: {
-    employeeName: "Mbaye",
-    employeeRole: "Responsable du service client"
-  }
-};
-```
-
-`getSurveys()`
-
-Description : Récupère toutes les enquêtes.
+Ce fichier montre comment utiliser les fonctions pour gérer les enquêtes, les questions et les réponses.
 
 
-`getSurveyById(id)`
+## Modules et Fonctions
 
-Description : Récupère une enquête spécifique en fonction de son id.
+### surveyModule.js
 
+Ce module permet de gérer les opérations CRUD de la collection `surveys`. Il est composé des fonctions suivantes :
 
-`updateSurvey(id, update)`
+- #### `createSurvey({ id, name, description, createdAt }, createdBy : {employeeName, employeeRole})`
+  -  Ajoute un document dans la collection `surveys`.
+  - **Paramètres**:
+    - `id` (int): ID de l'enquête.
+    - `name` (string): Nom de l'enquête.
+    - `description` (string): Description de l'enquête.
+    - `createdAt` (date): Date de création de l'enquête.
+    - `createdBy` (objet): Détails de l'employé qui a créé l'enquête (nom et rôle).
+    - `employeeName`(string) :Nom de l'employé.
+    - `employeeRole`(string) :Rôle de l'employé .
+  
 
-Description : Met à jour une enquête existante avec de nouvelles informations.
+- #### `getSurveys()`
+  -  Affiche tous les documents de la collection `surveys`.
+  - **Paramètres**: Aucun.
+ 
 
-`deleteSurvey(id)`
-
-Description : Supprime une enquête de la collection surveys en fonction de son id.
-
-**Module** : `Question`
-
-Ce module gère les questions dans les enquêtes.
-
-`createQuestion(question)`
-
-Description : Crée une nouvelle question dans une enquête.
-
-Exemple
-
-```const newQuestion = {
-  id: 1,
-  surveyId: 1,
-  title: "Comment évalueriez-vous notre service ?",
-  type: "rating",
-  options: {
-    minValue: 1,
-    maxValue: 5,
-    step: 1
-  }
-};
-```
-
-`getQuestions()`
-
-Description : Récupère toutes les questions.
-
-```
-const questions = await getQuestions();
-console.log(questions);
-```
-
-`getQuestionById(id)`
-
-Description : Récupère une question spécifique en fonction de son id.
-
-```
-await getQuestionById(1);
-```
-
-`updateQuestion(id, update)`
-
-Description : Met à jour une question existante avec de nouvelles informations.
-
-```
-await updateQuestion(1, { title: "Comment avez-vous entendu parler de nous ?" });
-```
-
-`deleteQuestion(id)`
-
-Description : Supprime une question de la collection survey_questions en fonction de son id.
-
-**Module :** `Answer`
-Ce module gère les réponses associées aux questions dans les enquêtes.
-
-`createAnswer(answer)`
-
-Description : Crée une nouvelle réponse pour une question dans une enquête.
-
-Exemple
-
-```const newAnswer = {
-  id: 1,
-  questionId: 1,
-  title: "Satisfait",
-};
-const result = await createAnswer(newAnswer);
-```
-
-`getAnswers()`
-
-Description : Récupère toutes les réponses.
-
-```
-const answers = await getAnswers();
-```
-
-`getAnswerById(id)`
-
-Description : Récupère une réponse spécifique en fonction de son id.
-
-```
-const answer = await getAnswerById(1);
-```
-
-`updateAnswer(id, update)`
-
-Description : Met à jour une réponse existante avec de nouvelles informations.
+- #### `getSurveyById(surveyId)`
+  -  Récupère une enquête par son ID.
+  - **Paramètres**:
+    - `surveyId` (int): ID de l'enquête à récupérer.
 
 
-`deleteAnswer(id)`
+- #### `updateSurvey(surveyId, { name, description, createdAt })`
+  -  Modifie un document de la collection `surveys`.
+  - **Paramètres**:
+    - `surveyId` (int): ID de l'enquête à mettre à jour.
+    - `name` (string): Nouveau nom de l'enquête.
+    - `description` (string): Nouvelle description de l'enquête.
+    - `createdAt` (date): Nouvelle date de création de l'enquête.
 
-Description : Supprime une réponse de la collection survey_answers en fonction de son id.
 
+- #### `deleteSurvey(surveyId)`
+  -  Supprime un document de la collection `surveys`.
+  - **Paramètres**:
+    - `surveyId` (int): ID de l'enquête à supprimer.
+ 
+
+### questionModule.js
+
+Ce module permet de gérer les opérations CRUD de la collection `survey_questions`. Il est composé des fonctions suivantes :
+
+- #### `createQuestion({ id, surveyId, title, type, options })`
+  -  Ajoute un document dans la collection `survey_questions`.
+  - **Paramètres**:
+    - `id` (int): ID de la question.
+    - `surveyId` (int): ID de l'enquête associée.
+    - `title` (string): Titre de la question.
+    - `type` (string): Type de la question (par exemple, "rating").
+    - `options` (objet): Options spécifiques à la question (par exemple, minValue, maxValue, step pour une question de type "rating").
+  -
+
+- #### `getQuestions()`
+  -  Affiche tous les documents dans la collection `survey_questions`.
+  - **Paramètres**: Aucun.
+
+
+- #### `getQuestionById(questionId)`
+  -  Récupère une question par son ID.
+  - **Paramètres**:
+    - `questionId` (int): ID de la question à récupérer.
+ 
+
+- #### `updateQuestion(questionId, { surveyId, title, type, options })`
+  -  Modifie un document de la collection `survey_questions`.
+  - **Paramètres**:
+    - `questionId` (int): ID de la question à mettre à jour.
+    - `surveyId` (int): ID de l'enquête associée.
+    - `title` (string): Nouveau titre de la question.
+    - `type` (string): Nouveau type de la question.
+    - `options` (objet): Nouvelles options de la question.
+  
+
+- #### `deleteQuestion(questionId)`
+  -  Supprime un document de la collection `survey_questions`.
+  - **Paramètres**:
+    - `questionId` (int): ID de la question à supprimer.
+
+
+### answerModule.js
+
+Ce module permet de gérer les opérations CRUD de la collection `survey_answers`. Il est composé des fonctions suivantes :
+
+- #### `createAnswer({ id, questionId, title })`
+  -  Ajoute un document dans la collection `survey_answers`.
+  - **Paramètres**:
+    - `id` (int): ID de la réponse.
+    - `questionId` (int): ID de la question associée.
+    - `title` (string): Titre de la réponse.
+ 
+
+- #### `getAnswers()`
+  -  Affiche tous les documents dans la collection `survey_answers`.
+  - **Paramètres**: Aucun.
+ 
+
+- #### `getAnswerById(answerId)`
+  -  Récupère une réponse par son ID.
+  - **Paramètres**:
+    - `answerId` (int): ID de la réponse à récupérer.
+ 
+
+- #### `updateAnswer(answerId, { questionId, title })`
+  -  Modifie un document de la collection `survey_answers`.
+  - **Paramètres**:
+    - `answerId` (int): ID de la réponse à mettre à jour.
+    - `questionId` (int): ID de la question associée.
+    - `title` (string): Nouveau titre de la réponse.
+  
+
+- #### `deleteAnswer(answerId)`
+  -  Supprime un document de la collection `survey_answers`.
+  - **Paramètres**:
+    - `answerId` (int): ID de la réponse à supprimer.
 
 ## Authors
 
