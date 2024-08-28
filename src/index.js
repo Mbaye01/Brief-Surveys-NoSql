@@ -52,7 +52,7 @@ async function run() {
 
     console.log("\n==== Gestion des Questions ====");
     const newQuestion = {
-      idQuestion: 1,
+      idQuestion: 4,
       surveyId: 1,
       title: "Quelle est votre satisfaction globale ?",
       type: "rating",
@@ -65,7 +65,7 @@ async function run() {
     await createQuestion(newQuestion);
     await readAllQuestions();
     await readQuestionById(1);
-    await updateQuestion(4, {
+    await updateQuestion(1, {
       title: "Comment évalueriez-vous notre service ? (Mise à jour)",
     });
     await deleteQuestion(4);
