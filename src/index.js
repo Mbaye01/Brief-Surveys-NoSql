@@ -1,93 +1,82 @@
-const { connectDB, getDB } = require("./config/database");
-
 const {
-  insertSurvey,
-  getAllSurveys,
-  getSurveyById,
-  updateSurvey,
-  deleteSurvey,
+  ajoutSurvey,
+  listerSurvey,
+  modifierSurvey,
+  supprimerSurvey,
 } = require("./surveyModule");
 const {
-  createQuestion,
-  readAllQuestions,
-  readQuestionById,
-  updateQuestion,
-  deleteQuestion,
+  ajouterQuestion,
+  listerQuestion,
+  modifierQuestion,
+  supprimerQuestion,
 } = require("./questionModule");
 const {
-  createAnswer,
-  readAllAnswers,
-  readAnswerById,
-  updateAnswer,
-  deleteAnswer,
+  ajouterReponse,
+  listerReponses,
+  modifierReponse,
+  supprimerReponse,
 } = require("./answerModule");
 
-async function run() {
-  try {
-    console.log("==== Gestion des Enquêtes ====");
-    const newSurvey = {
-      idSurvey: 1,
-      name: "Enquête de Satisfaction 001",
-      description: "Enquête visant à évaluer la satisfaction des clients concernant nos services.",
-      createdAt: "2024-07-25T08:00:00Z",
-      createdBy: {
-        employeeName: "Mbaye",
-        employeeRole: "Responsable du service client",
-      },
-    };
-    await insertSurvey(newSurvey);
-    await getAllSurveys();
-    await getSurveyById(1);
-    await updateSurvey(1, {
-      name: "Enquête de Satisfaction 002 - Mise à jour",
-      description: "Mise à jour de project.",
-      createdAt: "2024-08-13T10:00:00Z",
-      createdBy: {
-        employeeName: "Amadou ba",
-        employeeRole: "Developpeur",
-      },
-    });
-    await deleteSurvey(1);
-    await getAllSurveys();
+const survey = {
+  surveyId: 1,
+  name: "Enquête de Satisfaction 001",
+  description:
+    "Enquête visant à évaluer la satisfaction des clients concernant nos services.",
+  createdAt: "2024-07-25T08:00:00Z",
+  createdBy: {
+    employeeName: "Jane Smith",
+    employeeRole: "Responsable du service client",
+  },
+};
 
-    console.log("\n==== Gestion des Questions ====");
-    const newQuestion = {
-      idQuestion: 4,
-      surveyId: 1,
-      title: "Quelle est votre satisfaction globale ?",
-      type: "rating",
-      options: {
-        minValue: 1,
-        maxValue: 10,
-        step: 1,
-      },
-    };
-    await createQuestion(newQuestion);
-    await readAllQuestions();
-    await readQuestionById(1);
-    await updateQuestion(1, {
-      title: "Comment évalueriez-vous notre service ? (Mise à jour)",
-    });
-    await deleteQuestion(4);
-    await readAllQuestions();
+const question = {
+  questionId: 1,
+  surveyId: 1,
+  title: "Comment évalueriez-vous notre service ?",
+  type: "rating",
+  options: {
+    inValue: 1,
+    maxValue: 5,
+    step: 1,
+  },
+};
 
-    console.log("\n==== Gestion des Réponses ====");
-    const newAnswer = {
-      idAnswer: 1,
-      questionId: 1,
-      title: "Très bien",
-    };
-    await createAnswer(newAnswer);
-    await readAllAnswers();
-    await readAnswerById(1);
-    await updateAnswer(1, { options: [{ title: "Extrêmement satisfait" }] });
-    await deleteAnswer(1);
-    await readAllAnswers();
-  } catch (err) {
-    console.error("Erreur:", err);
-  }
+const reponse = { reponseId: 1, questionId: 1, title: "Très satisfait" };
+
+async function main() {
+  console.log("================== Test Survey=============");
+
+  await ajoutSurvey(survey);
+
+  await listerSurvey();
+
+  await modifierSurvey(1, { description: "Enquête mise à jour" });
+
+  await supprimerSurvey();
+
+  console.log("===r============Test des questions ========");
+
+  await ajouterQuestion(question);
+
+  await listerQuestion();
+
+  await modifierQuestion(1, {
+    title: "Comment évalueriez-vous notre service maintenant ?",
+  });
+
+  await supprimerQuestion();
+
+  console.log("===========Test des réponses ===============");
+
+  await ajouterReponse(reponse);
+
+  await listerReponses();
+
+  await modifierReponse(1, { title: "Satisfait" });
+
+  await supprimerReponse();
+
+  process.exit();
 }
 
-connectDB()
-  .then(run)
-  .catch(err => console.error("Connexion à la base de données échouée:", err));
+main();

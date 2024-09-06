@@ -1,96 +1,94 @@
-const { connectDB } = require('./config/database');
+const { db } = require("./config/database");
 
-async function createAnswer(idAnswer, questionId, options) {
-    const db = await connectDB();
-    const collection = db.collection('survey_answers');
+const collectionReponse = db.collection("reponses");
+const collectionQuestion = db.collection("questions");
 
-    try {
-        // Vérifier si l'ID de la réponse existe déjà
-        const existingAnswer = await collection.findOne({ idAnswer });
-        if (existingAnswer) {
-            console.log(`Une réponse avec l'ID ${idAnswer} existe déjà.`);
-            return;
-        }
+async function ajouterReponse(reponseData) {
+  const questionExiste = await collectionQuestion.findOne({
+    questionId: reponseData.questionId,
+  });
 
-        // Création de la nouvelle réponse
-        const newAnswer = {
-            idAnswer,
-            questionId,
-            options
-        };
-        await collection.insertOne(newAnswer);
-        console.log("Réponse créée avec succès:", newAnswer);
-    } catch (err) {
-        console.error("Erreur lors de la création de la réponse:", err);
+  if (!questionExiste) {
+    console.log(
+      `La question avec l'ID '${reponseData.questionId}' n'existe pas.`
+    );
+  } else {
+    const reponseExiste = await collectionReponse.findOne({
+      reponseId: reponseData.reponseId,
+    });
+
+    if (reponseExiste) {
+      console.log(
+        `Une réponse avec l'ID '${reponseData.reponseId}' existe déjà.`
+      );
+    } else {
+      await collectionReponse.insertOne(reponseData);
+      console.log(
+        `La réponse avec l'ID ${reponseData.reponseId} a été ajoutée avec succès.`
+      );
     }
+  }
 }
 
-async function readAllAnswers() {
-    const db = await connectDB();
-    const collection = db.collection('survey_answers');
-    
-    try {
-        const answers = await collection.find({}).toArray();
-        console.log("Liste des réponses:", answers);
-        return answers;
-    } catch (err) {
-        console.error("Erreur lors de la récupération des réponses:", err);
+async function listerReponses() {
+  try {
+    const reponses = await collectionReponse.find({}).toArray();
+
+    if (reponses.length > 0) {
+      console.log("Toutes les réponses trouvées :");
+      reponses.forEach((reponse) => {
+        console.log(JSON.parse(JSON.stringify(reponse)));
+      });
+    } else {
+      console.log("Aucune réponse trouvée.");
     }
+
+    return reponses;
+  } catch (e) {
+    throw new Error(e.message);
+  }
 }
 
-async function readAnswerById(idAnswer) {
-    const db = await connectDB();
-    const collection = db.collection('survey_answers');
-    
-    try {
-        const answer = await collection.findOne({ idAnswer });
-        if (answer) {
-            console.log("Réponse trouvée:", answer);
-            return answer;
-        } else {
-            // console.log("Réponse non trouvée pour l'ID:", idAnswer);
-        }
-    } catch (err) {
-        console.error("Erreur lors de la récupération de la réponse:", err);
+async function modifierReponse(reponseId, updatedData) {
+  try {
+    const result = await collectionReponse.updateOne(
+      { reponseId: reponseId },
+      { $set: updatedData }
+    );
+
+    if (result.matchedCount > 0) {
+      console.log(
+        `Réponse mise à jour avec succès pour la réponse ID '${reponseId}'.`
+      );
+    } else {
+      console.log(`Le document que vous tentez de modifier n'existe pas.`);
     }
+  } catch (e) {
+    throw new Error(e.message);
+  }
 }
 
-async function updateAnswer(idAnswer, updatedData) {
-    const db = await connectDB();
-    const collection = db.collection('survey_answers');
-    
-    try {
-        const result = await collection.updateOne({ idAnswer }, { $set: updatedData });
-        if (result.matchedCount > 0) {
-            console.log("Réponse mise à jour avec succès pour l'ID:", idAnswer);
-            return result;
-        } 
-    } catch (err) {
-        console.error("Erreur lors de la mise à jour de la réponse:", err);
-    }
-}
+async function supprimerReponse(reponseId) {
+  try {
+    const result = await collectionReponse.deleteOne({
+      reponseId: Number(reponseId),
+    });
 
-async function deleteAnswer(idAnswer) {
-    const db = await connectDB();
-    const collection = db.collection('survey_answers');
-    
-    try {
-        const result = await collection.deleteOne({ idAnswer });
-        if (result.deletedCount > 0) {
-            console.log("Réponse supprimée avec succès pour l'ID:", idAnswer);
-            return result;
-        } else {
-            console.log("Aucune réponse trouvée pour l'ID:", idAnswer);
-        }
-    } catch (err) {
-        console.error("Erreur lors de la suppression de la réponse:", err);
+    if (result.deletedCount > 0) {
+      console.log(
+        `Réponse supprimée avec succès pour la réponse ID '${reponseId}'.`
+      );
+    } else {
+      console.log(`Le document que vous tentez de supprimer n'existe pas.`);
     }
+  } catch (e) {
+    throw new Error(e.message);
+  }
 }
 
 module.exports = {
-    createAnswer,
-    readAllAnswers,
-    readAnswerById,
-    updateAnswer,
-    deleteAnswer
+  ajouterReponse,
+  listerReponses,
+  modifierReponse,
+  supprimerReponse,
 };

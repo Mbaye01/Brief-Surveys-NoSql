@@ -1,104 +1,68 @@
-const { connectDB } = require("./config/database");
+const { db } = require("./config/database");
+const collectionSurvey = db.collection("surveys");
 
-async function insertSurvey(fichier) {
-  const db = await connectDB();
-  const collection = db.collection("fichiers");
-
+async function ajoutSurvey(document) {
   try {
-    const existingFichier = await collection.findOne({
-      idSurvey: fichier.idSurvey,
+    const surveyExiste = await collectionSurvey.findOne({
+      surveyId: document.surveyId,
     });
-    if (existingFichier) {
-      console.log(
-        `Une enquête avec cet idSurvey ${fichier.idSurvey} existe déjà.`
-      );
-      return null;
+
+    if (surveyExiste) {
+      console.log("le document avec cet ID existe déjà.");
+    } else {
+      await collectionSurvey.insertOne(document);
+      console.log("le document ajouté avec succès.");
     }
-
-    const result = await collection.insertOne(fichier);
-    console.log(`Enquête insérée avec succès : (ID: ${fichier.idSurvey})`);
-    return result;
-  } catch (err) {
-    console.error("Erreur lors de l'insertion de l'enquête:", err);
-    throw err;
+  } catch (e) {
+    throw new Error(e.message);
   }
 }
 
-async function getAllSurveys() {
-  const db = await connectDB();
-  const collection = db.collection("fichiers");
-
+async function listerSurvey() {
   try {
-    const fichiers = await collection.find().toArray();
-    console.log(`Total de ${fichiers.length} enquêtes trouvées:`, fichiers);
-    return fichiers;
-  } catch (err) {
-    console.error("Erreur lors de la récupération des enquêtes:", err);
-    throw err;
+    const surveys = await collectionSurvey.find({}).toArray();
+    console.log(" Voici les documents:", surveys);
+  } catch (e) {
+    throw new Error(e.message);
   }
 }
 
-async function getSurveyById(idSurvey) {
-  const db = await connectDB();
-  const collection = db.collection("fichiers");
-
+async function modifierSurvey(surveyId, updateData) {
   try {
-    const fichier = await collection.findOne({ idSurvey: idSurvey });
-    if (!fichier) {
-      throw new Error(`Enquête avec l'ID ${idSurvey} introuvable.`);
-    }
-    console.log(`Enquête trouvée avec l'ID ${idSurvey} :`, fichier);
-    return fichier;
-  } catch (err) {
-    console.error("Erreur lors de la récupération de l'enquête:", err);
-    throw err;
-  }
-}
+    const id = parseInt(surveyId, 10);
 
-async function updateSurvey(idSurvey, updatedData) {
-  const db = await connectDB();
-  const collection = db.collection("fichiers");
-
-  try {
-    const result = await collection.updateOne(
-      { idSurvey: idSurvey },
-      { $set: updatedData }
+    const result = await collectionSurvey.updateOne(
+      { surveyId: id },
+      { $set: updateData }
     );
-
-    if (result.matchedCount === 0) {
-      throw new Error(`Enquête avec l'ID ${idSurvey} introuvable.`);
+    if (result.matchedCount > 0) {
+      console.log("Le document mis à jour avec succès.");
+    } else {
+      console.log(`Le document que vous tentez de modifier nexiste pas.`);
     }
-    console.log(`Enquête avec l'ID ${idSurvey} mise à jour avec succès.`);
-    return result;
-  } catch (err) {
-    console.error("Erreur lors de la mise à jour de l'enquête:", err);
-    throw err;
+  } catch (error) {
+    throw new Error(error.message);
   }
 }
 
-async function deleteSurvey(idSurvey) {
-  const db = await connectDB();
-  const collection = db.collection("fichiers");
-
+async function supprimerSurvey(surveyId) {
   try {
-    const result = await collection.deleteOne({ idSurvey: idSurvey });
+    const id = parseInt(surveyId, 10);
 
-    if (result.deletedCount === 0) {
-      throw new Error(`Enquête avec l'ID ${idSurvey} introuvable.`);
+    const result = await collectionSurvey.deleteOne({ surveyId: id });
+    if (result.deletedCount > 0) {
+      console.log("Le document supprimé avec succès.");
+    } else {
+      console.log(`Le document que vous tentez de supprimer n'existe pas.`);
     }
-    console.log(`Enquête avec l'ID ${idSurvey} supprimée avec succès.`);
-    return result;
-  } catch (err) {
-    console.error("Erreur lors de la suppression de l'enquête:", err);
-    throw err;
+  } catch (e) {
+    throw new Error(e.message);
   }
 }
 
-// Export des fonctions pour les utiliser dans d'autres fichiers
 module.exports = {
-  insertSurvey,
-  getAllSurveys,
-  getSurveyById,
-  updateSurvey,
-  deleteSurvey,
+  ajoutSurvey,
+  listerSurvey,
+  modifierSurvey,
+  supprimerSurvey,
 };

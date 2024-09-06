@@ -1,25 +1,6 @@
 const { MongoClient } = require("mongodb");
 
-const url = "mongodb://localhost:27017";
-const dbName = "abc_survey_app";
+const client = new MongoClient("mongodb://localhost:27017");
+const db = client.db("survey-app");
 
-let db = null;
-
-async function connectDB() {
-  if (db) {
-    return db;
-  }
-
-  const client = new MongoClient(url);
-  try {
-    await client.connect();
-    console.log("Connected to MongoDB");
-    db = client.db(dbName);
-    return db;
-  } catch (error) {
-    console.error("Erreur lors de la connexion à la base de données:", error);
-    throw error;
-  }
-}
-
-module.exports = { connectDB };
+module.exports = { client, db };
