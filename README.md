@@ -43,28 +43,129 @@ Pour démarrer l'application, exécutez la commande suivante :
 npm start
 ```
 
-## Documentation des Modules
+### 5. **_Documentation des Fonctions_**
 
-- **index.js :** est l'entrée principale de l'application. Il contient une fonction principale **main** qui englobe l'appel de toutes les fonctions des différents modules.
+Ce fichier montre comment utiliser les fonctions pour gérer les enquêtes, les questions et les réponses.
 
-- `ajoutSurvey({ surveyId:int ,name: string, description: string, createdAt: date}, createdBy:{employeeName: string, employeeRole: string}})` : pour ajouter un document dans la collection de **surveys**.
-- `listerSurvey()` : pour afficher tous les documents de la collection de **surveys**.
-- `modifierSurvey(surveyId: int ,{name: string, description: string, createdAt: date}, createdBy:{employeeName: string, employeeRole: string}}) ` : pour modifier un document de la collection de **surveys**.
-- `supprimerSurvey(surveyId: int )` : pour supprimer un document de la collection de **surveys**.
+## Modules et Fonctions
 
-- **questionModule.js :** Ce module permet de gérer les opérations **CRUD** de la collection **questions**. Il est composé des fonctions suivantes :
+### surveyModule.js
 
-  - `ajouterQuestion({questionId: int, surveyId: int, title: string, type: string, options:{minValue:int, maxValue:int, step:int}})` : pour ajouter un document dans la collection de **questions**.
-  - `listerQuestions()` : pour afficher tous les documents dans la collection de **questions**.
-  - `modifierQuestion(questionId: int, {title: string, type: string, options:{minValue:int, maxValue:int, step:int}})` : pour modifier un document dans la collection de **questions**.
-    `supprimerQuestion(questionId: int)` : pour supprimer un document dans la collection de **questions**.
+Ce module permet de gérer les opérations CRUD de la collection `surveys`. Il est composé des fonctions suivantes :
 
-- **answerModule.js :** Ce module permet de gérer les opérations **CRUD** de la collection **reponses**. Il est composé des fonctions suivantes :
+- #### `createSurvey({ id, name, description, createdAt }, createdBy : {employeeName, employeeRole})`
 
-  - ` ajouterReponse({ questionId: int,reponseId: int, title: string})` : Pour ajouter un document dans la collection de **reponses**.
-  - `listerReponses()` : Pour afficher tous les documents dans la collection de **reponses**.
-  - `modifierReponse(reponseId: int, {title: string})` : Pour modifier un document dans la collection de **reponses**.
-  - `supprimerReponse(reponseId: int,)` : Pour supprimer un document dans la collection de **reponses**.
+  - Ajoute un document dans la collection `surveys`.
+  - **Paramètres**:
+    - `id` (int): ID de l'enquête.
+    - `name` (string): Nom de l'enquête.
+    - `description` (string): Description de l'enquête.
+    - `createdAt` (date): Date de création de l'enquête.
+    - `createdBy` (objet): Détails de l'employé qui a créé l'enquête (nom et rôle).
+    - `employeeName`(string) :Nom de l'employé.
+    - `employeeRole`(string) :Rôle de l'employé .
+
+- #### `getSurveys()`
+
+  - Affiche tous les documents de la collection `surveys`.
+  - **Paramètres**: Aucun.
+
+- #### `getSurveyById(surveyId)`
+
+  - Récupère une enquête par son ID.
+  - **Paramètres**:
+    - `surveyId` (int): ID de l'enquête à récupérer.
+
+- #### `updateSurvey(surveyId, { name, description, createdAt })`
+
+  - Modifie un document de la collection `surveys`.
+  - **Paramètres**:
+    - `surveyId` (int): ID de l'enquête à mettre à jour.
+    - `name` (string): Nouveau nom de l'enquête.
+    - `description` (string): Nouvelle description de l'enquête.
+    - `createdAt` (date): Nouvelle date de création de l'enquête.
+
+- #### `deleteSurvey(surveyId)`
+  - Supprime un document de la collection `surveys`.
+  - **Paramètres**:
+    - `surveyId` (int): ID de l'enquête à supprimer.
+
+### questionModule.js
+
+Ce module permet de gérer les opérations CRUD de la collection `survey_questions`. Il est composé des fonctions suivantes :
+
+- #### `createQuestion({ id, surveyId, title, type, options })`
+
+  - Ajoute un document dans la collection `survey_questions`.
+  - **Paramètres**:
+    - `id` (int): ID de la question.
+    - `surveyId` (int): ID de l'enquête associée.
+    - `title` (string): Titre de la question.
+    - `type` (string): Type de la question (par exemple, "rating").
+    - `options` (objet): Options spécifiques à la question (par exemple, minValue, maxValue, step pour une question de type "rating").
+  -
+
+- #### `getQuestions()`
+
+  - Affiche tous les documents dans la collection `survey_questions`.
+  - **Paramètres**: Aucun.
+
+- #### `getQuestionById(questionId)`
+
+  - Récupère une question par son ID.
+  - **Paramètres**:
+    - `questionId` (int): ID de la question à récupérer.
+
+- #### `updateQuestion(questionId, { surveyId, title, type, options })`
+
+  - Modifie un document de la collection `survey_questions`.
+  - **Paramètres**:
+    - `questionId` (int): ID de la question à mettre à jour.
+    - `surveyId` (int): ID de l'enquête associée.
+    - `title` (string): Nouveau titre de la question.
+    - `type` (string): Nouveau type de la question.
+    - `options` (objet): Nouvelles options de la question.
+
+- #### `deleteQuestion(questionId)`
+  - Supprime un document de la collection `survey_questions`.
+  - **Paramètres**:
+    - `questionId` (int): ID de la question à supprimer.
+
+### answerModule.js
+
+Ce module permet de gérer les opérations CRUD de la collection `survey_answers`. Il est composé des fonctions suivantes :
+
+- #### `createAnswer({ id, questionId, title })`
+
+  - Ajoute un document dans la collection `survey_answers`.
+  - **Paramètres**:
+    - `id` (int): ID de la réponse.
+    - `questionId` (int): ID de la question associée.
+    - `title` (string): Titre de la réponse.
+
+- #### `getAnswers()`
+
+  - Affiche tous les documents dans la collection `survey_answers`.
+  - **Paramètres**: Aucun.
+
+- #### `getAnswerById(answerId)`
+
+  - Récupère une réponse par son ID.
+  - **Paramètres**:
+    - `answerId` (int): ID de la réponse à récupérer.
+
+- #### `updateAnswer(answerId, { questionId, title })`
+
+  - Modifie un document de la collection `survey_answers`.
+  - **Paramètres**:
+    - `answerId` (int): ID de la réponse à mettre à jour.
+    - `questionId` (int): ID de la question associée.
+    - `title` (string): Nouveau titre de la réponse.
+
+- #### `deleteAnswer(answerId)`
+  - Supprime un document de la collection `survey_answers`.
+  - **Paramètres**:
+    - `answerId` (int): ID de la réponse à supprimer.
 
 ## Authors
 
